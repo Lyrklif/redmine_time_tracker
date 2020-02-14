@@ -4,9 +4,20 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { startingValue } from './startingValue';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
+import mainStore from './store/mainStore';
+import { Provider } from "react-redux";
+
+// Начальные значения
+const data = startingValue;
+
+ReactDOM.render(
+  <Provider store={mainStore}>
+    <App data={data} />
+  </Provider>,
+  document.getElementById('root'));
+
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();
+
