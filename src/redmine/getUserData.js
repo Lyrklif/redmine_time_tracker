@@ -1,23 +1,17 @@
-
-// authorization
+// getUserData.js
 
 import axios from "axios";
 import { setStoreAuthorized, setStoreUser } from '../actions/actionCreators';
-import getTasks from './getTasks';
 
 // получить 
-const authorization = (url, api) => {
+const getUserData = (url, api) => {
   return axios.get(`${url}/users/current.json?key=${api}`)
     .then(response => {
       let data = JSON.parse(response.request.response);
       let userLogin = data.user.login;
+      let api_key = data.user.api_key;
 
-      setStoreAuthorized(true); // изменяем статус на "authorized" на true
-      setStoreUser(userLogin, api, url); // записываем данные пользователя
-      getTasks(url, api); // получить список задач
-
-      localStorage.setItem('url', url);
-      localStorage.setItem('api', api);
+      setStoreUser(userLogin, api_key, url); // записываем данные пользователя
 
       // console.log("authorization => response \n", response);
       return response;
@@ -25,12 +19,9 @@ const authorization = (url, api) => {
     .catch(function (error) {
       setStoreAuthorized(false); // изменяем статус на "authorized" на false
 
-      localStorage.removeItem('url');
-      localStorage.removeItem('api');
-
       console.log("authorization => error \n", error);
       return error;
     });
 }
 
-export default authorization;
+export default getUserData;

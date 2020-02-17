@@ -1,6 +1,6 @@
 // login
 import React from "react";
-import { Button, DatePicker, version, Layout, Input, Form } from "antd";
+import { Button, DatePicker, version, Layout, Input, Form, Icon, Row, Col } from "antd";
 import "antd/dist/antd.css";
 
 import getTasks from '../redmine/getTasks';
@@ -27,16 +27,12 @@ class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+
     this.getIssues();
   };
 
   getIssues = () => {
-    // getTasks(this.state.url, this.state.api);
     authorization(this.state.url, this.state.api);
-
-    // setTimeout(() => {
-    //   console.log(this.props);
-    // }, 3000);
   }
 
   setUrl = e => {
@@ -57,28 +53,41 @@ class Login extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          id="auth_url"
-          name="url"
-          placeholder="url"
-          onInput={this.setUrl}
-        />
+      <Form onSubmit={this.handleSubmit} className="login-form">
+        <Row justify="center">
 
-        <br />
+          <Col xs={{ span: 20, offset: 2 }} md={{ span: 14, offset: 5 }} lg={{ span: 14, offset: 6 }} xl={{ span: 12, offset: 7 }}>
+            <Form.Item label="Redmine Url">
+              <Input
+                prefix={<Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="http://template.ru"
+                onInput={this.setUrl}
+              />
+            </Form.Item>
 
-        <input
-          type="text"
-          id="auth_api"
-          name="api"
-          placeholder="api"
-          onInput={this.setApi}
-        />
+            <Form.Item label="Redmine Api">
+              <Input
+                prefix={<Icon type="api" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="api"
+                onInput={this.setApi}
+              />
+            </Form.Item>
 
-        <br />
-        <button>Отправить</button>
-      </form>
+            <Form.Item>
+              <Button
+                type="primary"
+                title="Войти"
+                htmlType="submit"
+                disabled={!this.state.url || !this.state.api}
+              >
+                Войти
+              </Button>
+            </Form.Item>
+          </Col>
+
+        </Row>
+
+      </Form>
     );
   }
 }
