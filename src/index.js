@@ -9,12 +9,16 @@ import { startingValue } from './startingValue';
 import mainStore from './store/mainStore';
 import { Provider } from "react-redux";
 
+import { BrowserRouter } from 'react-router-dom';
+
 // Начальные значения
 const data = startingValue;
 
 ReactDOM.render(
   <Provider store={mainStore}>
-    <App data={data} />
+    <BrowserRouter>
+      <App data={data} />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root'));
 

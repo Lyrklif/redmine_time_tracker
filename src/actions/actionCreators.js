@@ -6,11 +6,33 @@ import {
   UPD_TEXT,
   UPD_SELECTED_TEXT,
   UPD_TAG_PARAMETERS,
+  UPD_TASKS,
+  UPD_AUTHORIZED,
+  UPD_USER_DATA,
 } from './actionTypes';
 
 /*
  * генераторы экшенов
  */
+
+// обновить setStoreTasks
+export function setStoreTasks(value) {
+  mainStore.dispatch({ type: UPD_TASKS, value });
+}
+
+// обновить authorized
+export function setStoreAuthorized(authorized) {
+  mainStore.dispatch({ type: UPD_AUTHORIZED, authorized: authorized });
+}
+
+export function setStoreUser(login, key, url) {
+  mainStore.dispatch({
+    type: UPD_USER_DATA,
+    login: login,
+    key: key,
+    url: url
+  });
+}
 
 // обновить статусы
 export function updStates(name, value) {
@@ -21,41 +43,7 @@ export function updStates(name, value) {
   });
 }
 
-// обновить стили
-export function updStyles(name, value) {
-  updStore({
-    group: 'styles',
-    name: name,
-    value: value
-  });
-}
-
-// обновить размеры
-export function updSizes(name, value) {
-  updStore({
-    group: 'sizes',
-    name: name,
-    value: value
-  });
-}
-
-
 // обновить данные
 export function updStore(value) {
   mainStore.dispatch({ type: UPD_MAIN_STORE, value });
-}
-
-// обновить данные
-export function updText(value) {
-  mainStore.dispatch({ type: UPD_TEXT, value });
-}
-
-// обновить выделенный текст
-export function updSelectedText(value) {
-  mainStore.dispatch({ type: UPD_SELECTED_TEXT, value });
-}
-
-// обновить параметры тегов
-export function updTagParameters(value) {
-  mainStore.dispatch({ type: UPD_TAG_PARAMETERS, value });
 }
