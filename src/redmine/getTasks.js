@@ -12,7 +12,6 @@ const getTasks = (url, api) => {
 
       setStoreTasks(tasks.issues); // записать задачи
 
-      // console.log("getTasks => response \n", response);
       return response;
     })
     .catch(function (error) {
