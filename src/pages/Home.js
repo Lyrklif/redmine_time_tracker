@@ -2,7 +2,7 @@
 
 
 import React from "react";
-import { Button, DatePicker, version, Layout, Input, Form, Skeleton, Card } from "antd";
+import { Button, DatePicker, version, Layout, Input, Form, Skeleton, Card, Descriptions, Badge, Tag, Empty } from "antd";
 import "antd/dist/antd.css";
 
 import getTasks from '../redmine/getTasks';
@@ -24,44 +24,65 @@ class Home extends React.Component {
 
 
     this.state = {
-      loading: true,
+      loading: false, // должно быть true для показа Skeleton 
     };
-
   }
 
   render() {
     const { loading } = this.state;
-    const { Meta } = Card;
 
     let tasks = this.props.tasks;
 
     let tasksList = Object.values(tasks).map((elem, index) => {
       return (
-        <div key={index}>
-          <Card loading={loading}>
-            <Meta
-              title={`#${elem.id} ${elem.subject}`}
-              description={`${elem.description}`}
-            />
-            <p>проект: {elem.project.name}</p>
-            <p>статус: {elem.status.name}</p>
-            <p>приоритет: {elem.priority.name}</p>
-            <p>автор: {elem.author.name}</p>
-            <p>начало: {elem.start_date}</p>
-            <p>конец: {elem.due_date}</p>
+        <li key={index}>
+          <Card loading={loading} >
+            <h3>{`#${elem.id} ${elem.subject}`}</h3>
+            <Tag
+              color={
+                (elem.status.id === 1 && "geekblue") ||
+                (elem.status.id === 2 && "cyan") ||
+                (elem.status.id === 3 && "volcano") ||
+                (elem.status.id === 4 && "magenta") ||
+                "geekblue"
+              }
+            >
+              {elem.status.name}</Tag>
+            <Tag
+              color={
+                (elem.priority.id === 1 && "magenta") ||
+                (elem.priority.id === 2 && "geekblue") ||
+                (elem.priority.id === 3 && "lime") ||
+                (elem.priority.id === 4 && "cyan") ||
+                "geekblue"
+              }
+            >
+              {elem.priority.name}</Tag>
+
+            {elem.project.name &&
+              <Tag color="purple">{elem.project.name}</Tag>
+            }
+
+
+            {(elem.start_date && elem.due_date) &&
+              <Tag color="cyan">c {elem.start_date} до {elem.due_date}</Tag>
+            }
+
           </Card>
-        </div>
+        </li>
       )
     });
 
-    setTimeout(() => {
-      this.setState({ loading: false });
-    }, 1000);
-
     return (
       <div>
-        <h1>HOME</h1>
-        {tasksList}
+        {/* <h1>HOME</h1> */}
+        {tasksList ?
+          <ul className="clear-list">
+            {tasksList}
+          </ul>
+          :
+          <Empty />
+        }
       </div>
     );
   }

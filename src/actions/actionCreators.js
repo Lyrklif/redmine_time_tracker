@@ -3,9 +3,6 @@ import mainStore from '../store/mainStore';
 
 import {
   UPD_MAIN_STORE,
-  UPD_TEXT,
-  UPD_SELECTED_TEXT,
-  UPD_TAG_PARAMETERS,
   UPD_TASKS,
   UPD_AUTHORIZED,
   UPD_USER_DATA,
