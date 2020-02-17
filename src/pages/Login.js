@@ -1,6 +1,6 @@
 // login
 import React from "react";
-import { Button, DatePicker, version, Layout, Input, Form, Icon, Row, Col } from "antd";
+import { Button, DatePicker, version, Layout, Input, Form, Icon, Row, Col, Select } from "antd";
 import "antd/dist/antd.css";
 
 import getTasks from '../redmine/getTasks';
@@ -37,30 +37,34 @@ class Login extends React.Component {
 
   setUrl = e => {
     e.preventDefault();
+    let value = e.target.value.trim(); // значение без пробелов
 
-    this.setState({
-      url: e.target.value
-    });
+    // если последний символ /
+    if (value.endsWith('/')) {
+      value = value.substring(0, value.length - 1); // удалить последний символ
+    }
+
+    this.setState({ url: value });
   };
 
   setApi = e => {
     e.preventDefault();
 
     this.setState({
-      api: e.target.value
+      api: e.target.value.trim()
     });
   }
 
   render() {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Row justify="center">
-
+        <Row >
           <Col xs={{ span: 20, offset: 2 }} md={{ span: 14, offset: 5 }} lg={{ span: 14, offset: 6 }} xl={{ span: 12, offset: 7 }}>
             <Form.Item label="Redmine Url">
               <Input
                 prefix={<Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="http://template.ru"
+                size="large"
+                placeholder="http://redmine.url.ru"
                 onInput={this.setUrl}
               />
             </Form.Item>
@@ -68,6 +72,7 @@ class Login extends React.Component {
             <Form.Item label="Redmine Api">
               <Input
                 prefix={<Icon type="api" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                size="large"
                 placeholder="api"
                 onInput={this.setApi}
               />
@@ -76,6 +81,7 @@ class Login extends React.Component {
             <Form.Item>
               <Button
                 type="primary"
+                size="large"
                 title="Войти"
                 htmlType="submit"
                 disabled={!this.state.url || !this.state.api}
