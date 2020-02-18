@@ -6,6 +6,7 @@ import {
   UPD_TASKS,
   UPD_AUTHORIZED,
   UPD_USER_DATA,
+  UPD_APPLICATION_STATUS,
 } from './actionTypes';
 
 /*
@@ -14,12 +15,20 @@ import {
 
 // обновить setStoreTasks
 export function setStoreTasks(value) {
-  mainStore.dispatch({ type: UPD_TASKS, value });
+  mainStore.dispatch({type: UPD_TASKS, value});
 }
 
 // обновить authorized
 export function setStoreAuthorized(authorized) {
-  mainStore.dispatch({ type: UPD_AUTHORIZED, authorized: authorized });
+  mainStore.dispatch({type: UPD_AUTHORIZED, authorized: authorized});
+}
+
+export function setStoreApplicationStatus(name, value) {
+  mainStore.dispatch({
+    type: UPD_APPLICATION_STATUS,
+    name: name,
+    value: value
+  });
 }
 
 export function setStoreUser(login, key, url) {
@@ -42,5 +51,5 @@ export function updStates(name, value) {
 
 // обновить данные
 export function updStore(value) {
-  mainStore.dispatch({ type: UPD_MAIN_STORE, value });
+  mainStore.dispatch({type: UPD_MAIN_STORE, value});
 }

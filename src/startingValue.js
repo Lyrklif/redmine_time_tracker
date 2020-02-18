@@ -19,8 +19,10 @@ export const startingValue = {
   },
 
   application: {
+
     // состояния элементов
     states: {
+      skeleton: true,
       editText: true, // вкл/выкл режим редактирования текста
       colorPicker: false, // показать/скрыть панель выбора цвета
       dialogLink: false, // показать/скрыть панель ввода ссылки

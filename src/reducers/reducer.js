@@ -1,5 +1,4 @@
-
-// Редюсер (reducer) — это чистая функция, которая принимает предыдущее 
+// Редюсер (reducer) — это чистая функция, которая принимает предыдущее
 // состояние и экшен (state и action) и возвращает следующее состояние (новую версию предыдущего).
 
 // import { startingValue } from '../startingValue';
@@ -9,16 +8,20 @@ import {
   UPD_TASKS,
   UPD_AUTHORIZED,
   UPD_USER_DATA,
+  UPD_APPLICATION_STATUS,
 } from '../actions/actionTypes';
 
 export default (state, action) => {
   switch (action.type) {
-    // изменить какой-то из параметров
-    case UPD_MAIN_STORE:
+    // изменить какой-то из параметров UPD_APPLICATION_STATUS
+    case UPD_APPLICATION_STATUS:
       return Object.assign({}, state, {
-        [action.value.group]: {
-          ...state[action.value.group],
-          [action.value.name]: action.value.value ? action.value.value : !state.states[action.value.name]
+        application: {
+          ...state.application,
+          states: {
+            ...state.application.states,
+            [action.name]: action.value ? action.value : !state.application.states[action.name]
+          }
         }
       })
     // изменить UPD_TASKS

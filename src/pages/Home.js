@@ -2,12 +2,12 @@
 
 
 import React from "react";
-import { Button, DatePicker, version, Layout, Input, Form, Skeleton, Card, Descriptions, Badge, Tag, Empty } from "antd";
+import {Button, DatePicker, version, Layout, Input, Form, Skeleton, Card, Descriptions, Badge, Tag, Empty} from "antd";
 import "antd/dist/antd.css";
 
 import getTasks from '../redmine/getTasks';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 
 const mapStateToProps = (state) => {
@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
     tasks: state.tasks,
     url: state.user.redmineUrl,
     api: state.user.api_key,
+    skeleton: state.application.states.skeleton,
   }
 }
 
@@ -22,21 +23,58 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
-      loading: false, // должно быть true для показа Skeleton 
-    };
+      play: false,
+      // timer: new Date()
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    }
+  }
+
+  switchPlay = () => {
+    this.setState(state => ({
+      play: !this.state.play
+    }));
+  };
+
+
+  startTimer = () => {
+    this.switchPlay();
+
+    let timer = new Date();
+
+    let hours = timer.getHours();
+    let minutes = timer.getMinutes();
+    let seconds = timer.getSeconds();
+
+    this.setState(state => ({
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
+    }));
+  }
+
+  stopTimer = () => {
+    this.switchPlay();
   }
 
   render() {
-    const { loading } = this.state;
 
     let tasks = this.props.tasks;
 
     let tasksList = Object.values(tasks).map((elem, index) => {
       return (
         <li key={index}>
-          <Card loading={loading} >
+          <Card loading={this.props.skeleton}>
+            <Button
+              shape="circle"
+              type={this.state.play ? "danger" : "primary"}
+              icon={this.state.play ? "pause" : "caret-right"}
+              title={this.state.play ? "Стоп" : "Старт"}
+              onClick={this.state.play ? this.stopTimer : this.startTimer}
+            />
+            <p>{this.state.hours}:{this.state.minutes}:{this.state.seconds}</p>
             <h3>{`#${elem.id} ${elem.subject}`}</h3>
             <Tag
               color={
@@ -44,28 +82,30 @@ class Home extends React.Component {
                 (elem.status.id === 2 && "cyan") ||
                 (elem.status.id === 3 && "volcano") ||
                 (elem.status.id === 4 && "magenta") ||
+                (elem.status.id === 5 && "purple") ||
+                (elem.status.id === 6 && "green") ||
                 "geekblue"
               }
-            >
-              {elem.status.name}</Tag>
+            >{elem.status.name}</Tag>
             <Tag
               color={
-                (elem.priority.id === 1 && "magenta") ||
-                (elem.priority.id === 2 && "geekblue") ||
+                (elem.priority.id === 1 && "purple") ||
+                (elem.priority.id === 2 && "blue") ||
                 (elem.priority.id === 3 && "lime") ||
                 (elem.priority.id === 4 && "cyan") ||
+                (elem.priority.id === 5 && "green") ||
+                (elem.priority.id === 6 && "gold") ||
                 "geekblue"
               }
-            >
-              {elem.priority.name}</Tag>
+            >{elem.priority.name}</Tag>
 
             {elem.project.name &&
-              <Tag color="purple">{elem.project.name}</Tag>
+            <Tag color="purple">{elem.project.name}</Tag>
             }
 
 
             {(elem.start_date && elem.due_date) &&
-              <Tag color="cyan">c {elem.start_date} до {elem.due_date}</Tag>
+            <Tag color="cyan">c {elem.start_date} до {elem.due_date}</Tag>
             }
 
           </Card>
@@ -81,7 +121,7 @@ class Home extends React.Component {
             {tasksList}
           </ul>
           :
-          <Empty />
+          <Empty/>
         }
       </div>
     );

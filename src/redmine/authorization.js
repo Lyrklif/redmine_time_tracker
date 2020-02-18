@@ -2,7 +2,7 @@
 // authorization
 
 import axios from "axios";
-import { setStoreAuthorized, setStoreUser } from '../actions/actionCreators';
+import { setStoreAuthorized, setStoreUser, setStoreApplicationStatus } from '../actions/actionCreators';
 import getTasks from './getTasks';
 
 // получить 
@@ -18,6 +18,8 @@ const authorization = (url, api) => {
 
       localStorage.setItem('url', url);
       localStorage.setItem('api', api);
+
+      setStoreApplicationStatus('skeleton', false);
 
       // console.log("authorization => response \n", response);
       return response;
