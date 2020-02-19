@@ -19,6 +19,9 @@ const mapStateToProps = (state) => {
   }
 }
 
+/**
+ *
+ */
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +34,7 @@ class Home extends React.Component {
       seconds: 0,
     }
   }
+
 
   switchPlay = () => {
     this.setState(state => ({
