@@ -7,6 +7,7 @@ import {
   UPD_AUTHORIZED,
   UPD_USER_DATA,
   UPD_APPLICATION_STATUS,
+  UPD_STATISTICS,
 } from './actionTypes';
 
 /*
@@ -26,6 +27,14 @@ export function setStoreAuthorized(authorized) {
 export function setStoreApplicationStatus(name, value) {
   mainStore.dispatch({
     type: UPD_APPLICATION_STATUS,
+    name: name,
+    value: value
+  });
+}
+
+export function setStoreStatistics(name, value) {
+  mainStore.dispatch({
+    type: UPD_STATISTICS,
     name: name,
     value: value
   });

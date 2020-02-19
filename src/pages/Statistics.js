@@ -23,6 +23,13 @@ import CardContent from '@material-ui/core/CardContent';
 
 import {connect} from 'react-redux';
 
+import getStatistics from '../redmine/getStatistics';
+import {
+  commandGetStatisticsToday,
+  commandGetStatisticsWeek,
+  commandGetStatisticsMonth
+} from '../functions/commandGetStatistics';
+
 
 /**
  *
@@ -31,24 +38,28 @@ import {connect} from 'react-redux';
  */
 const mapStateToProps = (state) => {
   return {
-    tasks: state.tasks,
-    url: state.user.redmineUrl,
-    api: state.user.api_key,
-    skeleton: state.application.states.skeleton,
+    day: state.statistics.day,
+    week: state.statistics.week,
+    month: state.statistics.month,
   }
-}
+};
 
 
 class Statistics extends React.Component {
   constructor(props) {
     super(props);
+    getStatistics('day', commandGetStatisticsToday);
+    getStatistics('week', commandGetStatisticsWeek);
+    getStatistics('month', commandGetStatisticsMonth);
   }
-
 
   render() {
     return (
       <div>
         <h1>Статистика</h1>
+        <p>за день: {this.props.day}</p>
+        <p>за неделю: {this.props.week}</p>
+        <p>за месяц: {this.props.month}</p>
 
       </div>
     );

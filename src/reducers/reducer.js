@@ -9,6 +9,7 @@ import {
   UPD_AUTHORIZED,
   UPD_USER_DATA,
   UPD_APPLICATION_STATUS,
+  UPD_STATISTICS,
 } from '../actions/actionTypes';
 
 export default (state, action) => {
@@ -23,18 +24,27 @@ export default (state, action) => {
             [action.name]: action.value ? action.value : !state.application.states[action.name]
           }
         }
-      })
+      });
     // изменить UPD_TASKS
     case UPD_TASKS:
       return Object.assign({}, state, {
         ...state,
         'tasks': action.value
-      })
+      });
+    // изменить UPD_STATISTICS
+    case UPD_STATISTICS:
+      return Object.assign({}, state, {
+        ...state,
+        'statistics': {
+          ...state.statistics,
+          [action.name]: action.value ? action.value : 0
+        }
+      });
     // авторизован ли пользователь
     case UPD_AUTHORIZED:
       return Object.assign({}, state, {
         'authorized': action.authorized ? action.authorized : !state.authorized,
-      })
+      });
     // авторизован ли пользователь
     case UPD_USER_DATA:
       return Object.assign({}, state, {
@@ -44,7 +54,7 @@ export default (state, action) => {
           api_key: action.key ? action.key : '',
           redmineUrl: action.url ? action.url : '',
         }
-      })
+      });
     default:
       return state
   }

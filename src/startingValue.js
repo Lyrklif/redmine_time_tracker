@@ -18,6 +18,12 @@ export const startingValue = {
 
   },
 
+  statistics: {
+    day: 0,
+    week: 0,
+    month: 0,
+  },
+
   application: {
 
     // состояния элементов
