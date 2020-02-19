@@ -1,13 +1,34 @@
 // pageHeader
 
 import React from "react";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { Button, DatePicker, version, Layout, Menu } from "antd";
-import "antd/dist/antd.css";
+import * as IconsLib from "@material-ui/icons";
+// let Icon = IconsLib[elem[1]];
+// <Icon />
+
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 
-const { Header } = Layout;
+import Divider from "@material-ui/core/Divider";
+import Box from '@material-ui/core/Box';
+import Tabs from '@material-ui/core/Tabs';
+import Paper from '@material-ui/core/Paper';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 
 const mapStateToProps = (state) => {
   return {
@@ -16,35 +37,61 @@ const mapStateToProps = (state) => {
   }
 }
 
+function ElevationScroll(props) {
+  const {children, window} = props;
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+    target: window ? window() : undefined,
+  });
+
+  return React.cloneElement(children, {
+    elevation: trigger ? 4 : 0,
+  });
+}
+
 // настройка тегов
 class PageHeader extends React.Component {
   constructor(props) {
     super(props);
   }
 
-
   render() {
-
     return (
-      <Header>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['1']}
-          style={{ lineHeight: '64px' }}
+      <ElevationScroll>
+        <AppBar
+          component={'header'}
+          position="fixed"
+          color="primary"
         >
-          <Menu.Item key="1">Задачи</Menu.Item>
-          <Menu.Item key="2">Статистика</Menu.Item>
-          <Menu.Item key="3">{this.props.name}</Menu.Item>
+          <Toolbar>
 
-        </Menu>
+            <IconButton edge="start" aria-label="menu" color="inherit">
+              <MenuIcon/>
+            </IconButton>
 
-      </Header>
 
+            <Link to="/tasks" className={"clear-link-style"}>
+              <Button color="inherit">
+                Задачи
+              </Button>
+            </Link>
+
+            <Link to="/statistics" className={"clear-link-style"}>
+              <Button color="inherit">
+                Статистика
+              </Button>
+            </Link>
+
+            <Typography variant="body2" color="inherit">
+              {this.props.name}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </ElevationScroll>
     )
   }
 }
-
 
 
 export default connect(mapStateToProps)(PageHeader);
