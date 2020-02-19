@@ -56,10 +56,13 @@ class Statistics extends React.Component {
   render() {
     return (
       <div>
+        <Box boxShadow={3}>
         <h1>Статистика</h1>
         <p>за день: {this.props.day}</p>
         <p>за неделю: {this.props.week}</p>
         <p>за месяц: {this.props.month}</p>
+          
+        </Box>
 
       </div>
     );

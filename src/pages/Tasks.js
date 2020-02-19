@@ -69,7 +69,7 @@ class Tasks extends React.Component {
     });
 
     return (
-      <ul className="clear-list">
+      <ul className="clear-list tasks-list">
         {tasksList}
       </ul>
     );

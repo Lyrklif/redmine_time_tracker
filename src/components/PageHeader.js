@@ -62,7 +62,7 @@ class PageHeader extends React.Component {
         <AppBar
           component={'header'}
           position="fixed"
-          color="primary"
+          bgcolor="primary.dark"
         >
           <Toolbar>
 

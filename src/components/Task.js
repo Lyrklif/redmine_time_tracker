@@ -1,31 +1,27 @@
 // home
 
-
 import React from "react";
-
 
 import * as IconsLib from "@material-ui/icons";
 
-import Chip from '@material-ui/core/Chip';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Card from '@material-ui/core/Card';
-
+import Chip from "@material-ui/core/Chip";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Card from "@material-ui/core/Card";
 
 import Divider from "@material-ui/core/Divider";
-import Box from '@material-ui/core/Box';
-import Tabs from '@material-ui/core/Tabs';
-import Paper from '@material-ui/core/Paper';
+import Box from "@material-ui/core/Box";
+import Tabs from "@material-ui/core/Tabs";
+import Paper from "@material-ui/core/Paper";
 
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 
-import {connect} from 'react-redux';
-
+import { connect } from "react-redux";
 
 /**
  *
@@ -41,7 +37,6 @@ import {connect} from 'react-redux';
 //   }
 // }
 
-
 class Task extends React.Component {
   constructor(props) {
     super(props);
@@ -51,10 +46,9 @@ class Task extends React.Component {
       // timer: new Date()
       hours: 0,
       minutes: 0,
-      seconds: 0,
-    }
+      seconds: 0
+    };
   }
-
 
   /**
    *
@@ -64,7 +58,6 @@ class Task extends React.Component {
       play: !this.state.play
     }));
   };
-
 
   /**
    *
@@ -81,7 +74,7 @@ class Task extends React.Component {
     this.setState(state => ({
       hours: hours,
       minutes: minutes,
-      seconds: seconds,
+      seconds: seconds
     }));
   };
 
@@ -98,39 +91,73 @@ class Task extends React.Component {
    */
   render() {
     return (
-      <Card>
-        <CardContent>
-          <Typography color="textSecondary">
-            {this.props.id}
-          </Typography>
-          <Typography variant="h6" gutterBottom component="h3">
-            {this.props.subject}
-          </Typography>
+      <Box
+        bgcolor="primary.main"
+        p={2}
+        color="text.primary"
+        borderColor="primary.dark"
+        borderRadius="borderRadius"
+        border={1}
+        boxShadow={2}
+      >
+        <Typography color="textSecondary" variant="caption">
+          {this.props.id}
+        </Typography>
 
-          {this.props.status && <Chip variant="outlined" color="primary" size="small" label={this.props.status}/>}
-          {this.props.priority && <Chip variant="outlined" color="primary" size="small" label={this.props.priority}/>}
-          {this.props.project && <Chip variant="outlined" color="primary" size="small" label={this.props.project}/>}
-          {(this.props.start_date && this.props.due_date) &&
-          <Chip variant="outlined" color="primary" size="small"
-                label={`c ${this.props.start_date} до ${this.props.due_date}`}/>
-          }
-        </CardContent>
+        <Typography
+          variant="body2"
+          gutterBottom
+          component="h3"
+          color="text.primary"
+        >
+          {this.props.subject}
+        </Typography>
 
-        <CardActions>
-          <IconButton
-            variant="contained"
-            color="primary"
-            onClick={this.state.play ? this.stopTimer : this.startTimer}
-          >
-            {this.state.play ? <IconsLib.Pause/> : <IconsLib.PlayArrow/>}
-          </IconButton>
+        {this.props.status && (
+          <Chip
+            variant="outlined"
+            size="small"
+            icon={<IconsLib.BusinessCenter />}
+            label={this.props.status}
+          />
+        )}
+        {this.props.priority && (
+          <Chip
+            variant="outlined"
+            size="small"
+            icon={<IconsLib.PriorityHigh />}
+            label={this.props.priority}
+          />
+        )}
+        {this.props.project && (
+          <Chip
+            variant="outlined"
+            size="small"
+            icon={<IconsLib.LocalOffer />}
+            label={this.props.project}
+          />
+        )}
+        {this.props.start_date && this.props.due_date && (
+          <Chip
+            variant="outlined"
+            size="small"
+            icon={<IconsLib.Today />}
+            label={`c ${this.props.start_date} до ${this.props.due_date}`}
+          />
+        )}
 
-          <Typography variant="body1">
-            {this.state.hours}:{this.state.minutes}:{this.state.seconds}
-          </Typography>
-        </CardActions>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={this.state.play ? this.stopTimer : this.startTimer}
+        >
+          {this.state.play ? <IconsLib.Pause /> : <IconsLib.PlayArrow />}
+        </Button>
 
-      </Card>
+        <Typography variant="body1">
+          {this.state.hours}:{this.state.minutes}:{this.state.seconds}
+        </Typography>
+      </Box>
     );
   }
 }

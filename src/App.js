@@ -47,11 +47,12 @@ class App extends React.Component {
 
     return (
       <MuiThemeProvider theme={MyTheme}>
-        <Box className="App">
+        <Box className="App" bgcolor="primary.dark">
 
           <PageHeader/>
 
-          <main className={'main-content'}>
+
+          <Box component={'main'} className={'main-content'}>
             <Switch>
               <Route exact path='/' render={() => (
                 authorized ? (<Tasks/>) : (<Redirect to="/login"/>)
@@ -69,7 +70,7 @@ class App extends React.Component {
                 authorized ? (<Redirect to="/"/>) : (<Login/>)
               )}/>
             </Switch>
-          </main>
+          </Box>
         </Box>
       </MuiThemeProvider>
     );
