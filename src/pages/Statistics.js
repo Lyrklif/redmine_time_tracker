@@ -34,7 +34,7 @@ import {
 /**
  *
  * @param state
- * @returns {{skeleton: boolean, api: string, tasks: {}, url: string}}
+ * @returns {{week: number, month: number, day: number}}
  */
 const mapStateToProps = (state) => {
   return {
