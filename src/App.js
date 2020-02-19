@@ -47,7 +47,7 @@ class App extends React.Component {
 
     return (
       <MuiThemeProvider theme={MyTheme}>
-        <Box className="App" bgcolor="primary.dark">
+        <Box className="App" bgcolor="primary.main">
 
           <PageHeader/>
 

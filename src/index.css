@@ -40,8 +40,8 @@ code {
 }
 
 .task {
-  margin-bottom: 30px;
-  margin-top: 30px;
+  margin-bottom: 8px;
+  margin-top: 8px;
 }
 
 .login-form {
@@ -60,4 +60,17 @@ code {
 
 .login-form>button {
   align-self: center;
+}
+
+
+.page-header {
+  width: 100vw;
+  z-index: 999;
+}
+
+
+button:active {
+  -webkit-box-shadow: 0px 0px 0px 6px rgba(181, 181, 192, 0.2);
+  -moz-box-shadow: 0px 0px 0px 6px rgba(181, 181, 192, 0.2);
+  box-shadow: 0px 0px 0px 6px rgba(181, 181, 192, 0.2);
 }

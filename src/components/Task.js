@@ -23,19 +23,13 @@ import CardContent from "@material-ui/core/CardContent";
 
 import { connect } from "react-redux";
 
-/**
- *
- * @param state
- * @returns {{skeleton: boolean, api: string, tasks: {}, url: string}}
- */
-// const mapStateToProps = (state) => {
-//   return {
-//     tasks: state.tasks,
-//     url: state.user.redmineUrl,
-//     api: state.user.api_key,
-//     skeleton: state.application.states.skeleton,
-//   }
-// }
+import lime from "@material-ui/core/colors/teal";
+import { ThemeProvider } from "@material-ui/styles";
+
+import MyTheme from "../MyTheme";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+// const redTheme = createMuiTheme({ palette: { primary: lime } });
+const redTheme = createMuiTheme(MyTheme.palette.stop);
 
 class Task extends React.Component {
   constructor(props) {
@@ -50,18 +44,12 @@ class Task extends React.Component {
     };
   }
 
-  /**
-   *
-   */
   switchPlay = () => {
     this.setState(state => ({
       play: !this.state.play
     }));
   };
 
-  /**
-   *
-   */
   startTimer = () => {
     this.switchPlay();
 
@@ -78,27 +66,17 @@ class Task extends React.Component {
     }));
   };
 
-  /**
-   *
-   */
   stopTimer = () => {
     this.switchPlay();
   };
 
-  /**
-   *
-   * @returns {*}
-   */
   render() {
     return (
       <Box
-        bgcolor="primary.main"
+        bgcolor="primary.light"
         p={2}
         color="text.primary"
-        borderColor="primary.dark"
         borderRadius="borderRadius"
-        border={1}
-        boxShadow={2}
       >
         <Typography color="textSecondary" variant="caption">
           {this.props.id}
@@ -112,6 +90,15 @@ class Task extends React.Component {
         >
           {this.props.subject}
         </Typography>
+
+        {this.props.project && (
+          <Chip
+            variant="outlined"
+            size="small"
+            icon={<IconsLib.LocalOffer />}
+            label={this.props.project}
+          />
+        )}
 
         {this.props.status && (
           <Chip
@@ -129,14 +116,7 @@ class Task extends React.Component {
             label={this.props.priority}
           />
         )}
-        {this.props.project && (
-          <Chip
-            variant="outlined"
-            size="small"
-            icon={<IconsLib.LocalOffer />}
-            label={this.props.project}
-          />
-        )}
+
         {this.props.start_date && this.props.due_date && (
           <Chip
             variant="outlined"
@@ -146,13 +126,20 @@ class Task extends React.Component {
           />
         )}
 
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={this.state.play ? this.stopTimer : this.startTimer}
-        >
-          {this.state.play ? <IconsLib.Pause /> : <IconsLib.PlayArrow />}
-        </Button>
+        <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
+          <Button
+            theme={this.state.play ? redTheme : MyTheme}
+            variant="contained"
+            color={this.state.play ? "secondary" : "secondary"}
+            onClick={this.state.play ? this.stopTimer : this.startTimer}
+          >
+            {this.state.play ? (
+              <IconsLib.Stop color="text.secondary" />
+            ) : (
+              <IconsLib.PlayArrow color="text.secondary" />
+            )}
+          </Button>
+        </MuiThemeProvider>
 
         <Typography variant="body1">
           {this.state.hours}:{this.state.minutes}:{this.state.seconds}
@@ -162,5 +149,4 @@ class Task extends React.Component {
   }
 }
 
-// export default connect(mapStateToProps)(Task);
 export default Task;
