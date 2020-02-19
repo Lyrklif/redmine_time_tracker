@@ -48,8 +48,8 @@ class Statistics extends React.Component {
   render() {
     return (
       <div>
-        <h1>Statistics</h1>
-        <p>TTTTTTTTTT Tegfesfgs sfgs g seg seg se</p>
+        <h1>Статистика</h1>
+
       </div>
     );
   }

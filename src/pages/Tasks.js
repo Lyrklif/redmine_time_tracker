@@ -39,8 +39,6 @@ import Task from '../components/Task';
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
-    url: state.user.redmineUrl,
-    api: state.user.api_key,
     skeleton: state.application.states.skeleton,
   }
 }
@@ -49,65 +47,11 @@ const mapStateToProps = (state) => {
 class Tasks extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      play: false,
-      // timer: new Date()
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    }
   }
 
-
-  /**
-   *
-   */
-  switchPlay = () => {
-    this.setState(state => ({
-      play: !this.state.play
-    }));
-  };
-
-
-  /**
-   *
-   */
-  startTimer = () => {
-    this.switchPlay();
-
-    let timer = new Date();
-
-    let hours = timer.getHours();
-    let minutes = timer.getMinutes();
-    let seconds = timer.getSeconds();
-
-    this.setState(state => ({
-      hours: hours,
-      minutes: minutes,
-      seconds: seconds,
-    }));
-  }
-
-  /**
-   *
-   */
-  stopTimer = () => {
-    this.switchPlay();
-  }
-
-  /**
-   *
-   * @returns {*}
-   */
   render() {
-
     let tasks = this.props.tasks;
 
-    /**
-     *
-     * @type {*[]}
-     */
     let tasksList = Object.values(tasks).map((elem, index) => {
       return (
         <li key={index} className={'task'}>

@@ -4,6 +4,7 @@
 import axios from "axios";
 import { setStoreAuthorized, setStoreUser, setStoreApplicationStatus } from '../actions/actionCreators';
 import getTasks from './getTasks';
+import getStatistics from './getStatistics';
 
 // получить 
 const authorization = (url, api) => {
@@ -15,6 +16,7 @@ const authorization = (url, api) => {
       setStoreAuthorized(true); // изменяем статус на "authorized" на true
       setStoreUser(userLogin, api, url); // записываем данные пользователя
       getTasks(url, api); // получить список задач
+      getStatistics(url, api); // получить статистику
 
       localStorage.setItem('url', url);
       localStorage.setItem('api', api);
