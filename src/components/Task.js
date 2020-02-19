@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
 
 import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
@@ -78,6 +79,11 @@ class Task extends React.Component {
         color="text.primary"
         borderRadius="borderRadius"
       >
+        {/* <Grid container spacing={3}>
+        <Grid item xs={12}>
+
+        </Grid>
+        </Grid> */}
         <Typography color="textSecondary" variant="caption">
           {this.props.id}
         </Typography>
@@ -92,36 +98,20 @@ class Task extends React.Component {
         </Typography>
 
         {this.props.project && (
-          <Chip
-            variant="outlined"
-            size="small"
-            icon={<IconsLib.LocalOffer />}
-            label={this.props.project}
-          />
+          <Chip variant="outlined" size="small" label={this.props.project} />
+        )}
+        {this.props.priority && (
+          <Chip variant="outlined" size="small" label={this.props.priority} />
         )}
 
         {this.props.status && (
-          <Chip
-            variant="outlined"
-            size="small"
-            icon={<IconsLib.BusinessCenter />}
-            label={this.props.status}
-          />
-        )}
-        {this.props.priority && (
-          <Chip
-            variant="outlined"
-            size="small"
-            icon={<IconsLib.PriorityHigh />}
-            label={this.props.priority}
-          />
+          <Chip variant="outlined" size="small" label={this.props.status} />
         )}
 
         {this.props.start_date && this.props.due_date && (
           <Chip
             variant="outlined"
             size="small"
-            icon={<IconsLib.Today />}
             label={`c ${this.props.start_date} до ${this.props.due_date}`}
           />
         )}
