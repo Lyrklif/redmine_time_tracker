@@ -13,7 +13,7 @@ const getUserData = (url, api) => {
 
       setStoreUser(userLogin, api_key, url); // записываем данные пользователя
 
-      // console.log("authorization => response \n", response);
+      // console.log("authorization => success \n", response);
       return response;
     })
     .catch(function (error) {

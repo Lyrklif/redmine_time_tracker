@@ -31,47 +31,72 @@ import {makeStyles} from "@material-ui/core/styles";
 import MyTheme from "../MyTheme";
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 
+
+
+
+import timeEntries from '../redmine/timeEntries';
+
+
 const redTheme = createMuiTheme(MyTheme.palette.stop);
 
 class Task extends React.Component {
   constructor(props) {
     super(props);
 
+    this.timer = undefined;
+
     this.state = {
       play: false,
-      // timer: new Date()
-      hours: "0",
-      minutes: "00",
-      seconds: "00"
+      seconds: 0,
+      minutes: 0,
+      hours: 0,
+      timer: 0,
     };
   }
 
   switchPlay = (value) => {
     this.setState(state => ({
-      play: value? value : !this.state.play
+      play: value ? value : !this.state.play
     }));
   };
 
   startTimer = () => {
     this.switchPlay(true);
-
-    let timer = new Date();
-
-    let hours = timer.getHours();
-    let minutes = timer.getMinutes();
-    let seconds = timer.getSeconds();
-
-    this.setState(state => ({
-      hours: hours,
-      minutes: minutes,
-      seconds: seconds
-    }));
+    this.timer = setInterval(this.addSecond, 1000);
   };
 
   stopTimer = () => {
     this.switchPlay(false);
+    clearTimeout(this.timer);
+
+    //TODO отправлять реальные данные
+    timeEntries(this.props.id, 0.5, 9, 'test04'); // [id, time, activity, comment]
   };
-  
+
+  addSecond = () => {
+    let seconds = this.state.seconds;
+    let minutes = this.state.minutes;
+    let hours = this.state.hours;
+
+    seconds++;
+
+    if (seconds >= 60) {
+      seconds = 0;
+      minutes++;
+
+      if (minutes >= 60) {
+        minutes = 0;
+        hours++;
+      }
+    }
+
+    this.setState(state => ({
+      seconds: seconds,
+      minutes: minutes,
+      hours: hours,
+    }));
+  };
+
 
   render() {
     return (
@@ -84,7 +109,7 @@ class Task extends React.Component {
         <Grid container>
           <Grid item xs={12} sm={9}>
             <Typography color="textSecondary" variant="caption">
-              {this.props.id} - {this.props.project}
+              {this.props.id} {this.props.project}
             </Typography>
 
             <Typography
@@ -107,7 +132,7 @@ class Task extends React.Component {
             <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
               <Button
                 theme={this.state.play ? redTheme : MyTheme}
-                variant="contained"
+                variant={"outlined"}
                 size="small"
                 color={this.state.play ? "secondary" : "secondary"}
                 onClick={this.state.play ? this.stopTimer : this.startTimer}
@@ -120,44 +145,16 @@ class Task extends React.Component {
               </Button>
             </MuiThemeProvider>
 
-            <Box m={1}></Box>
+            <Box m={1}/>
 
             <Typography variant="body1">
-              {this.state.hours}:{this.state.minutes}:{this.state.seconds}
+              {this.state.hours}
+              :{this.state.minutes >= 10 ? this.state.minutes : `0${this.state.minutes}`}
+              :{this.state.seconds >= 10 ? this.state.seconds : `0${this.state.seconds}`}
             </Typography>
           </Grid>
         </Grid>
 
-        {/* <Box m={1}>
-          <Divider />
-        </Box> */}
-
-        {/* <Grid container>
-          <Grid item xs={12}>
-            {this.props.project && (
-              <Chip
-                variant="outlined"
-                size="small"
-                label={this.props.project}
-              />
-            )}
-            {this.props.priority && (
-              <Chip
-                variant="outlined"
-                size="small"
-                label={this.props.priority}
-              />
-            )}
-
-            {this.props.start_date && this.props.due_date && (
-              <Chip
-                variant="outlined"
-                size="small"
-                label={`c ${this.props.start_date} до ${this.props.due_date}`}
-              />
-            )}
-          </Grid>
-        </Grid> */}
       </Box>
     );
   }

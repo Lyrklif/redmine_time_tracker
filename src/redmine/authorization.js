@@ -23,7 +23,7 @@ const authorization = (url, api) => {
 
       setStoreApplicationStatus('skeleton', false);
 
-      // console.log("authorization => response \n", response);
+      // console.log("authorization => success \n", response);
       return response;
     })
     .catch(function (error) {
