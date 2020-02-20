@@ -24,12 +24,13 @@ import CardContent from "@material-ui/core/CardContent";
 
 import { connect } from "react-redux";
 
-import lime from "@material-ui/core/colors/teal";
-import { ThemeProvider } from "@material-ui/styles";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/styles";
 
+import { makeStyles } from "@material-ui/core/styles";
 import MyTheme from "../MyTheme";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-// const redTheme = createMuiTheme({ palette: { primary: lime } });
+
 const redTheme = createMuiTheme(MyTheme.palette.stop);
 
 class Task extends React.Component {
@@ -39,9 +40,9 @@ class Task extends React.Component {
     this.state = {
       play: false,
       // timer: new Date()
-      hours: 0,
-      minutes: 0,
-      seconds: 0
+      hours: "0",
+      minutes: "00",
+      seconds: "00"
     };
   }
 
@@ -79,61 +80,83 @@ class Task extends React.Component {
         color="text.primary"
         borderRadius="borderRadius"
       >
-        {/* <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid container>
+          <Grid item xs={12} sm={9}>
+            <Typography color="textSecondary" variant="caption">
+              {this.props.id} - {this.props.project}
+            </Typography>
 
-        </Grid>
-        </Grid> */}
-        <Typography color="textSecondary" variant="caption">
-          {this.props.id}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          gutterBottom
-          component="h3"
-          color="text.primary"
-        >
-          {this.props.subject}
-        </Typography>
-
-        {this.props.project && (
-          <Chip variant="outlined" size="small" label={this.props.project} />
-        )}
-        {this.props.priority && (
-          <Chip variant="outlined" size="small" label={this.props.priority} />
-        )}
-
-        {this.props.status && (
-          <Chip variant="outlined" size="small" label={this.props.status} />
-        )}
-
-        {this.props.start_date && this.props.due_date && (
-          <Chip
-            variant="outlined"
-            size="small"
-            label={`c ${this.props.start_date} до ${this.props.due_date}`}
-          />
-        )}
-
-        <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
-          <Button
-            theme={this.state.play ? redTheme : MyTheme}
-            variant="contained"
-            color={this.state.play ? "secondary" : "secondary"}
-            onClick={this.state.play ? this.stopTimer : this.startTimer}
+            <Typography
+              variant="body2"
+              gutterBottom
+              component="h3"
+              color="text.primary"
+            >
+              {this.props.subject}
+            </Typography>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={3}
+            alignItems="center"
+            justify="flex-end"
           >
-            {this.state.play ? (
-              <IconsLib.Stop color="text.secondary" />
-            ) : (
-              <IconsLib.PlayArrow color="text.secondary" />
-            )}
-          </Button>
-        </MuiThemeProvider>
+            <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
+              <Button
+                theme={this.state.play ? redTheme : MyTheme}
+                variant="contained"
+                size="small"
+                color={this.state.play ? "secondary" : "secondary"}
+                onClick={this.state.play ? this.stopTimer : this.startTimer}
+              >
+                {this.state.play ? (
+                  <IconsLib.Stop color="text.secondary" />
+                ) : (
+                  <IconsLib.PlayArrow color="text.secondary" />
+                )}
+              </Button>
+            </MuiThemeProvider>
 
-        <Typography variant="body1">
-          {this.state.hours}:{this.state.minutes}:{this.state.seconds}
-        </Typography>
+            <Box m={1}></Box>
+
+            <Typography variant="body1">
+              {this.state.hours}:{this.state.minutes}:{this.state.seconds}
+            </Typography>
+          </Grid>
+        </Grid>
+
+        {/* <Box m={1}>
+          <Divider />
+        </Box> */}
+
+        {/* <Grid container>
+          <Grid item xs={12}>
+            {this.props.project && (
+              <Chip
+                variant="outlined"
+                size="small"
+                label={this.props.project}
+              />
+            )}
+            {this.props.priority && (
+              <Chip
+                variant="outlined"
+                size="small"
+                label={this.props.priority}
+              />
+            )}
+
+            {this.props.start_date && this.props.due_date && (
+              <Chip
+                variant="outlined"
+                size="small"
+                label={`c ${this.props.start_date} до ${this.props.due_date}`}
+              />
+            )}
+          </Grid>
+        </Grid> */}
       </Box>
     );
   }
