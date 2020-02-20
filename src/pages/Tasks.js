@@ -53,6 +53,7 @@ class Tasks extends React.Component {
     let tasks = this.props.tasks;
 
     let tasksList = Object.values(tasks).map((elem, index) => {
+      console.log(elem);
       return (
         <li key={index} className={'task'}>
           <Task
@@ -63,6 +64,8 @@ class Tasks extends React.Component {
             status={elem.status.name}
             start_date={elem.start_date}
             due_date={elem.due_date}
+            estimated_hours={elem.estimated_hours}
+            spent_hours={elem.spent_hours}
           />
         </li>
       )

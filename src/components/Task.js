@@ -32,8 +32,6 @@ import MyTheme from "../MyTheme";
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 
 
-
-
 import timeEntries from '../redmine/timeEntries';
 
 
@@ -70,7 +68,7 @@ class Task extends React.Component {
     clearTimeout(this.timer);
 
     //TODO отправлять реальные данные
-    timeEntries(this.props.id, 0.5, 9, 'test04'); // [id, time, activity, comment]
+    // timeEntries(this.props.id, 0.5, 9, 'test05'); // [id, time, activity, comment]
   };
 
   addSecond = () => {
@@ -155,6 +153,38 @@ class Task extends React.Component {
           </Grid>
         </Grid>
 
+        <Box m={1}>
+          План:
+          {this.props.estimated_hours ? this.props.estimated_hours : 0}
+          =>
+          затрекано:
+          {this.props.spent_hours ? this.props.spent_hours.toFixed(2) : 0}
+        </Box>
+        <Box m={1}>
+          <Divider/>
+        </Box>
+
+        {this.props.priority && (
+          <Chip
+            variant="outlined"
+            size="small"
+            label={`${this.props.priority}`}
+          />
+        )}
+        {this.props.status && (
+          <Chip
+            variant="outlined"
+            size="small"
+            label={`${this.props.status}`}
+          />
+        )}
+        {this.props.start_date && this.props.due_date && (
+          <Chip
+            variant="outlined"
+            size="small"
+            label={`c ${this.props.start_date} до ${this.props.due_date}`}
+          />
+        )}
       </Box>
     );
   }

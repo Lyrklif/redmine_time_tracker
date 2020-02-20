@@ -1,12 +1,19 @@
 // timeEntries
 import axios from "axios";
-import { setStoreStatistics } from '../actions/actionCreators';
+import {setStoreStatistics} from '../actions/actionCreators';
 
 
 import authorization from "./authorization";
 
 
-
+/**
+ *
+ * @param id
+ * @param time
+ * @param activity
+ * @param comment
+ * @returns {Promise<AxiosResponse<T>>|null}
+ */
 const timeEntries = (id, time, activity, comment) => {
   const url = localStorage.getItem('url');
   const api = localStorage.getItem('api');

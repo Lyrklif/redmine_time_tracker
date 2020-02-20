@@ -18,7 +18,10 @@ const getStatistics = (name, command) => {
       hours = +hours.toFixed(2);
 
       setStoreStatistics(name, hours);
-      // return hours;
+
+      //TODO попробовать передавать параметры так, чтобы не получать AxiosResponse
+      //const { data } = response
+      // return data;
     })
     .catch(function (error) {
       console.log("getStatistics => error \n", error);
