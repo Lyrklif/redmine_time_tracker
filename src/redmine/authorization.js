@@ -6,7 +6,7 @@ import { setStoreAuthorized, setStoreUser, setStoreApplicationStatus } from '../
 import getTasks from './getTasks';
 import getStatistics from './getStatistics';
 
-// получить 
+//TODO перенести всё, кроме запроса к redmine в другие функции
 const authorization = (url, api) => {
   return axios.get(`${url}/users/current.json?key=${api}`)
     .then(response => {

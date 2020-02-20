@@ -19,7 +19,17 @@ import Paper from "@material-ui/core/Paper";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 
-import { connect } from "react-redux";
+import PieChart from '../components/PieChart';
+
+
+import {
+  CircularProgressbar,
+  CircularProgressbarWithChildren,
+  buildStyles
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
+import {connect} from "react-redux";
 
 import getStatistics from "../redmine/getStatistics";
 import {
@@ -27,6 +37,8 @@ import {
   commandGetStatisticsWeek,
   commandGetStatisticsMonth
 } from "../functions/commandGetStatistics";
+import Grid from "@material-ui/core/Grid";
+
 
 /**
  *
@@ -50,20 +62,34 @@ class Statistics extends React.Component {
   }
 
   render() {
+    let dayPercent = (this.props.day * 100 / 8).toFixed(2);
+    let weekPercent = (this.props.week * 100 / 40).toFixed(2);
+    let monthPercent = (this.props.month * 100 / 160).toFixed(2);
+
     return (
-      <div>
-        <Box
-          bgcolor="primary.light"
-          p={2}
-          color="text.primary"
-          borderRadius="borderRadius"
-        >
-          <h1>Статистика</h1>
-          <p>за день: {this.props.day}</p>
-          <p>за неделю: {this.props.week}</p>
-          <p>за месяц: {this.props.month}</p>
-        </Box>
-      </div>
+      <Grid container justify="center" alignItems="flex-start">
+        <Grid item xs={12} sm={6} md={4}>
+          <PieChart
+            percent={dayPercent}
+            text={'За этот день'}
+            hours={this.props.day}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <PieChart
+            percent={weekPercent}
+            text={'За эту неделю'}
+            hours={this.props.week}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <PieChart
+            percent={monthPercent}
+            text={'За этот месяц'}
+            hours={this.props.month}
+          />
+        </Grid>
+      </Grid>
     );
   }
 }

@@ -22,14 +22,14 @@ import Paper from "@material-ui/core/Paper";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/styles";
+import {withStyles} from "@material-ui/styles";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import MyTheme from "../MyTheme";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 
 const redTheme = createMuiTheme(MyTheme.palette.stop);
 
@@ -112,9 +112,9 @@ class Task extends React.Component {
                 onClick={this.state.play ? this.stopTimer : this.startTimer}
               >
                 {this.state.play ? (
-                  <IconsLib.Stop color="text.secondary" />
+                  <IconsLib.Stop color="text.secondary"/>
                 ) : (
-                  <IconsLib.PlayArrow color="text.secondary" />
+                  <IconsLib.PlayArrow color="text.secondary"/>
                 )}
               </Button>
             </MuiThemeProvider>

@@ -3,7 +3,7 @@ import {setStoreStatistics} from '../actions/actionCreators';
 import authorization from "./authorization";
 
 
-// получить статистику
+//TODO [возможно] перенести всё, кроме запроса к redmine в другую функцию
 const getStatistics = (name, command) => {
   const url = localStorage.getItem('url');
   const api = localStorage.getItem('api');
