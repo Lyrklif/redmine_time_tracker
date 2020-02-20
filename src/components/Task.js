@@ -46,14 +46,14 @@ class Task extends React.Component {
     };
   }
 
-  switchPlay = () => {
+  switchPlay = (value) => {
     this.setState(state => ({
-      play: !this.state.play
+      play: value? value : !this.state.play
     }));
   };
 
   startTimer = () => {
-    this.switchPlay();
+    this.switchPlay(true);
 
     let timer = new Date();
 
@@ -69,8 +69,9 @@ class Task extends React.Component {
   };
 
   stopTimer = () => {
-    this.switchPlay();
+    this.switchPlay(false);
   };
+  
 
   render() {
     return (

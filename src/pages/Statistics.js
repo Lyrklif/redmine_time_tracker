@@ -56,6 +56,7 @@ const mapStateToProps = state => {
 class Statistics extends React.Component {
   constructor(props) {
     super(props);
+    //TODO вместо этого получать все данные при авторизации и записывать в store
     getStatistics("day", commandGetStatisticsToday);
     getStatistics("week", commandGetStatisticsWeek);
     getStatistics("month", commandGetStatisticsMonth);
