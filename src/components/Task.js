@@ -31,6 +31,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import MyTheme from "../MyTheme";
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 
+import Timer from 'react-compound-timer';
+import moment from 'moment';
 
 import timeEntries from '../redmine/timeEntries';
 
@@ -40,8 +42,6 @@ const redTheme = createMuiTheme(MyTheme.palette.stop);
 class Task extends React.Component {
   constructor(props) {
     super(props);
-
-    this.timer = undefined;
 
     this.state = {
       play: false,
@@ -60,39 +60,16 @@ class Task extends React.Component {
 
   startTimer = () => {
     this.switchPlay(true);
-    this.timer = setInterval(this.addSecond, 1000);
   };
 
-  stopTimer = () => {
+  stopTimer = (milliseconds) => {
+    let hours = (milliseconds / (1000 * 60 * 60)).toFixed(2);
+
     this.switchPlay(false);
-    clearTimeout(this.timer);
+    // timeEntries(this.props.id, hours, 9, 'test05'); // ****** РАБОТАЕТ
 
-    //TODO отправлять реальные данные
-    // timeEntries(this.props.id, 0.5, 9, 'test05'); // [id, time, activity, comment]
-  };
-
-  addSecond = () => {
-    let seconds = this.state.seconds;
-    let minutes = this.state.minutes;
-    let hours = this.state.hours;
-
-    seconds++;
-
-    if (seconds >= 60) {
-      seconds = 0;
-      minutes++;
-
-      if (minutes >= 60) {
-        minutes = 0;
-        hours++;
-      }
-    }
-
-    this.setState(state => ({
-      seconds: seconds,
-      minutes: minutes,
-      hours: hours,
-    }));
+    //TODO отправлять activity и comment
+    // timeEntries(this.props.id, hours, 9, 'test05'); // [id, time, activity, comment]
   };
 
 
@@ -127,29 +104,47 @@ class Task extends React.Component {
             alignItems="center"
             justify="flex-end"
           >
-            <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
-              <Button
-                theme={this.state.play ? redTheme : MyTheme}
-                variant={"outlined"}
-                size="small"
-                color={this.state.play ? "secondary" : "secondary"}
-                onClick={this.state.play ? this.stopTimer : this.startTimer}
-              >
-                {this.state.play ? (
-                  <IconsLib.Stop color="text.secondary"/>
-                ) : (
-                  <IconsLib.PlayArrow color="text.secondary"/>
-                )}
-              </Button>
-            </MuiThemeProvider>
+            <Timer
+              startImmediately={false}
+              formatValue={(value) => `${(value < 10 ? `0${value}` : value)}`}
+              onStart={() => this.startTimer()}
+            >
+              {({start, resume, pause, stop, reset, getTimerState, getTime}) => (
+                <>
+                  <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
+                    <Button
+                      theme={this.state.play ? redTheme : MyTheme}
+                      variant={"outlined"}
+                      size="small"
+                      color={this.state.play ? "secondary" : "secondary"}
+                      onClick={this.state.play ? () => {
+                        {
+                          stop();
+                          this.stopTimer(getTime());
+                          reset();
+                        }
+                      } : start}
+                    >
+                      {this.state.play ? (
+                        <IconsLib.Stop color="text.secondary"/>
+                      ) : (
+                        <IconsLib.PlayArrow color="text.secondary"/>
+                      )}
+                    </Button>
+                    <Box m={1}/>
+                    <Timer.Hours/>:<Timer.Minutes/>:<Timer.Seconds/>
+                  </MuiThemeProvider>
+                </>
+              )}
+            </Timer>
 
             <Box m={1}/>
 
-            <Typography variant="body1">
-              {this.state.hours}
-              :{this.state.minutes >= 10 ? this.state.minutes : `0${this.state.minutes}`}
-              :{this.state.seconds >= 10 ? this.state.seconds : `0${this.state.seconds}`}
-            </Typography>
+            {/*<Typography variant="body1">*/}
+            {/*  {this.state.hours}*/}
+            {/*  :{this.state.minutes >= 10 ? this.state.minutes : `0${this.state.minutes}`}*/}
+            {/*  :{this.state.seconds >= 10 ? this.state.seconds : `0${this.state.seconds}`}*/}
+            {/*</Typography>*/}
           </Grid>
         </Grid>
 
@@ -185,9 +180,12 @@ class Task extends React.Component {
             label={`c ${this.props.start_date} до ${this.props.due_date}`}
           />
         )}
+
       </Box>
     );
   }
 }
 
 export default Task;
+
+

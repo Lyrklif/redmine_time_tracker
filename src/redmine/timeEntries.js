@@ -20,19 +20,18 @@ const timeEntries = (id, time, activity, comment) => {
 
   if (!url || !api || !time || !id) return null;
 
-  let vrem = {
+  let data = {
     time_entry: {
       issue_id: id,
       hours: time,
       activity_id: activity ? activity : 9,
       comments: comment ? comment : ''
     }
-  }
+  };
 
-  return axios.post(`${url}/time_entries.json?key=${api}`, vrem)
+  return axios.post(`${url}/time_entries.json?key=${api}`, data)
     .then(response => {
-      console.log("timeEntries => success", response);
-      // return hours;
+      return response;
     })
     .catch(error => {
       console.log("timeEntries => error \n", error);
