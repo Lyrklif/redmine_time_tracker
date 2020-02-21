@@ -35,6 +35,7 @@ import Timer from 'react-compound-timer';
 import moment from 'moment';
 
 import timeEntries from '../redmine/timeEntries';
+import axios from "axios";
 
 
 const redTheme = createMuiTheme(MyTheme.palette.stop);
@@ -71,7 +72,6 @@ class Task extends React.Component {
     //TODO отправлять activity и comment
     // timeEntries(this.props.id, hours, 9, 'test05'); // [id, time, activity, comment]
   };
-
 
   render() {
     return (
