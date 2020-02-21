@@ -2,49 +2,23 @@ import React from "react";
 
 import * as IconsLib from "@material-ui/icons";
 
-import Chip from "@material-ui/core/Chip";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Card from "@material-ui/core/Card";
-
-import Divider from "@material-ui/core/Divider";
-import Box from "@material-ui/core/Box";
-import Tabs from "@material-ui/core/Tabs";
-import Paper from "@material-ui/core/Paper";
-
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 
 import PieChart from '../components/PieChart';
 
-
-import {
-  CircularProgressbar,
-  CircularProgressbarWithChildren,
-  buildStyles
-} from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {connect} from "react-redux";
 
 import getStatistics from "../redmine/getStatistics";
 import {
-  commandGetStatisticsToday,
-  commandGetStatisticsWeek,
-  commandGetStatisticsMonth
+  periodToday,
+  periodWeek,
+  periodMonth
 } from "../functions/commandGetStatistics";
 import Grid from "@material-ui/core/Grid";
+import {statistics} from "../actions/actionCreators";
 
 
-/**
- *
- * @param state
- * @returns {{week: number, month: number, day: number}}
- */
 const mapStateToProps = state => {
   return {
     day: state.statistics.day,
@@ -53,14 +27,53 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchStatistics: (name, value) => dispatch(statistics(name, value)),
+  }
+};
+
 class Statistics extends React.Component {
   constructor(props) {
     super(props);
-    //TODO вместо этого получать все данные при авторизации и записывать в store
-    getStatistics("day", commandGetStatisticsToday);
-    getStatistics("week", commandGetStatisticsWeek);
-    getStatistics("month", commandGetStatisticsMonth);
+
+    this.state = {
+      isLoadingDay: true,
+      isLoadingWeek: true,
+      isLoadingMonth: true,
+    };
+
+    this.updComponent = this.updComponent.bind(this);
   }
+
+  setStatistics = (name, response) => {
+    response.then(e => {
+      const data = e.data.time_entries;
+      let hours = 0;
+      data.forEach(elem => hours += elem.hours);
+      hours = +hours.toFixed(2);
+
+      this.props.dispatchStatistics(name, hours);
+    });
+  };
+
+  componentDidMount() {
+    this.updComponent(periodToday, "day", 'isLoadingDay').then(r => this.setLoaded('isLoadingDay'));
+    this.updComponent(periodWeek, "week", 'isLoadingWeek').then(r => this.setLoaded('isLoadingWeek'));
+    this.updComponent(periodMonth, "month", 'isLoadingMonth').then(r => this.setLoaded('isLoadingMonth'));
+  };
+
+  async updComponent(period, name, loadingName) {
+    let value = getStatistics(period);
+    this.setStatistics(name, value);
+  }
+
+  setLoaded = (name) => {
+    this.setState({
+      [name]: false
+    });
+  };
+
 
   render() {
     let dayPercent = (this.props.day * 100 / 8).toFixed(2);
@@ -74,6 +87,7 @@ class Statistics extends React.Component {
             percent={dayPercent}
             text={'За этот день'}
             hours={this.props.day}
+            isLoading={this.state.isLoadingDay}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
@@ -81,6 +95,7 @@ class Statistics extends React.Component {
             percent={weekPercent}
             text={'За эту неделю'}
             hours={this.props.week}
+            isLoading={this.state.isLoadingWeek}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
@@ -88,6 +103,7 @@ class Statistics extends React.Component {
             percent={monthPercent}
             text={'За этот месяц'}
             hours={this.props.month}
+            isLoading={this.state.isLoadingMonth}
           />
         </Grid>
       </Grid>
@@ -95,4 +111,4 @@ class Statistics extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Statistics);
+export default connect(mapStateToProps, mapDispatchToProps)(Statistics);

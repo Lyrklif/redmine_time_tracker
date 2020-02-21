@@ -12,6 +12,6 @@ const today = `${_year}-${_month}-${_day}`;
 const weekStarted = `${_year}-${_month}-${_firstDayWeek}`;
 const monthStarted = `${_year}-${_month}-01`;
 
-export const commandGetStatisticsToday = `from=${today}&to=${today}`;
-export const commandGetStatisticsWeek = `from=${weekStarted}&to=${today}`;
-export const commandGetStatisticsMonth = `from=${monthStarted}&to=${today}`;
+export const periodToday = `from=${today}&to=${today}`;
+export const periodWeek = `from=${weekStarted}&to=${today}`;
+export const periodMonth = `from=${monthStarted}&to=${today}`;

@@ -8,11 +8,12 @@ import {
   UPD_USER_DATA,
   UPD_APPLICATION_STATUS,
   UPD_STATISTICS,
-} from './actionTypes';
+} from '../variables/actionTypes';
 
 /*
  * генераторы экшенов
  */
+//TODO вынести dispatch из action creators
 
 // обновить setStoreTasks
 export function setStoreTasks(value) {
@@ -38,6 +39,13 @@ export function setStoreStatistics(name, value) {
     name: name,
     value: value
   });
+}
+export function statistics(name, value) {
+  return {
+    type: UPD_STATISTICS,
+    name: name,
+    value: value
+  };
 }
 
 export function setStoreUser(login, key, url) {

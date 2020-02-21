@@ -23,11 +23,31 @@ import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import MyTheme from './MyTheme';
 
+
+
+
+
+
+
+
 const mapStateToProps = (state) => {
   return {
     authorized: state.authorized,
   }
-}
+};
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    // onReceiveImpressions: (...vars) => dispatch(actionName(vars)),
+  }
+};
+
+
+
+
+
+
 
 class App extends React.Component {
   constructor(props) {
@@ -77,4 +97,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

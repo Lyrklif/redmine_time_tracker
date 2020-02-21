@@ -140,11 +140,6 @@ class Task extends React.Component {
 
             <Box m={1}/>
 
-            {/*<Typography variant="body1">*/}
-            {/*  {this.state.hours}*/}
-            {/*  :{this.state.minutes >= 10 ? this.state.minutes : `0${this.state.minutes}`}*/}
-            {/*  :{this.state.seconds >= 10 ? this.state.seconds : `0${this.state.seconds}`}*/}
-            {/*</Typography>*/}
           </Grid>
         </Grid>
 
@@ -166,13 +161,13 @@ class Task extends React.Component {
             label={`${this.props.priority}`}
           />
         )}
-        {this.props.status && (
-          <Chip
-            variant="outlined"
-            size="small"
-            label={`${this.props.status}`}
-          />
-        )}
+        {/*{this.props.status && (*/}
+        {/*  <Chip*/}
+        {/*    variant="outlined"*/}
+        {/*    size="small"*/}
+        {/*    label={`${this.props.status}`}*/}
+        {/*  />*/}
+        {/*)}*/}
         {this.props.start_date && this.props.due_date && (
           <Chip
             variant="outlined"

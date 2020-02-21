@@ -10,7 +10,7 @@ import {
   UPD_USER_DATA,
   UPD_APPLICATION_STATUS,
   UPD_STATISTICS,
-} from '../actions/actionTypes';
+} from '../variables/actionTypes';
 
 export default (state, action) => {
   switch (action.type) {
