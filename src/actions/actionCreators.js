@@ -19,13 +19,6 @@ export function setStoreTasks(value) {
   mainStore.dispatch({type: UPD_TASKS, value});
 }
 
-export function tasks(value) {
-  return {
-    type: UPD_TASKS,
-    value
-  }
-}
-
 // обновить authorized
 export function setStoreAuthorized(authorized) {
   mainStore.dispatch({type: UPD_AUTHORIZED, authorized: authorized});

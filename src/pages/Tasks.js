@@ -5,17 +5,11 @@ import * as IconsLib from "@material-ui/icons";
 
 import {connect} from 'react-redux';
 import Task from '../components/Task';
-import {tasks} from "../actions/actionCreators";
-import getStatistics from "../redmine/getStatistics";
-import {periodMonth, periodToday, periodWeek} from "../functions/commandGetStatistics";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {tasks} from "../actions/tasks";
 
-/**
- *
- * @param state
- * @returns {{skeleton: boolean, api: string, tasks: {}, url: string}}
- */
+
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
@@ -56,6 +50,7 @@ class Tasks extends React.Component {
     this.setTasks(value);
   }
 
+  //TODO спинер не показывается
   setLoaded = () => {
     this.setState({
       isLoading: false
