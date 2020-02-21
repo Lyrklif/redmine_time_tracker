@@ -1,69 +1,117 @@
 import React from "react";
 
-
 import * as IconsLib from "@material-ui/icons";
 
-import Chip from '@material-ui/core/Chip';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Card from '@material-ui/core/Card';
 
+import PieChart from '../components/PieChart';
 
-import Divider from "@material-ui/core/Divider";
-import Box from '@material-ui/core/Box';
-import Tabs from '@material-ui/core/Tabs';
-import Paper from '@material-ui/core/Paper';
+import {connect} from "react-redux";
 
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-
-import {connect} from 'react-redux';
-
-import getStatistics from '../redmine/getStatistics';
+import getStatistics from "../redmine/getStatistics";
 import {
-  commandGetStatisticsToday,
-  commandGetStatisticsWeek,
-  commandGetStatisticsMonth
-} from '../functions/commandGetStatistics';
+  periodToday,
+  periodWeek,
+  periodMonth
+} from "../functions/commandGetStatistics";
+import Grid from "@material-ui/core/Grid";
+import {statistics} from "../actionCreators/statistics";
 
 
-/**
- *
- * @param state
- * @returns {{week: number, month: number, day: number}}
- */
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     day: state.statistics.day,
     week: state.statistics.week,
-    month: state.statistics.month,
-  }
+    month: state.statistics.month
+  };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchStatistics: (name, value) => dispatch(statistics(name, value)),
+  }
+};
 
 class Statistics extends React.Component {
   constructor(props) {
     super(props);
-    getStatistics('day', commandGetStatisticsToday);
-    getStatistics('week', commandGetStatisticsWeek);
-    getStatistics('month', commandGetStatisticsMonth);
+
+    this.state = {
+      isLoadingDay: true,
+      isLoadingWeek: true,
+      isLoadingMonth: true,
+    };
+
+    this.updComponent = this.updComponent.bind(this); // async, поэтому нужно объявлять так
   }
 
-  render() {
-    return (
-      <div>
-        <h1>Статистика</h1>
-        <p>за день: {this.props.day}</p>
-        <p>за неделю: {this.props.week}</p>
-        <p>за месяц: {this.props.month}</p>
+  setStatistics = (name, response) => {
+    response.then(e => {
+      if (e) {
+        const data = e.data.time_entries;
+        let hours = 0;
+        data.forEach(elem => hours += elem.hours);
+        hours = +hours.toFixed(2);
 
-      </div>
+        this.props.dispatchStatistics(name, hours);
+      } else {
+        alert('Ошибка в setStatistics');
+      }
+
+    });
+  };
+
+  componentDidMount() {
+    this.updComponent(periodToday, "day").then(r => this.setLoaded('isLoadingDay'));
+    this.updComponent(periodWeek, "week").then(r => this.setLoaded('isLoadingWeek'));
+    this.updComponent(periodMonth, "month").then(r => this.setLoaded('isLoadingMonth'));
+  };
+
+  async updComponent(period, name, loadingName) {
+    let value = getStatistics(period);
+    this.setStatistics(name, value);
+  }
+
+  //TODO спинер не показывается. Возможная причина: статус меняется до того, как store обновится
+  setLoaded = (name) => {
+    this.setState({
+      [name]: false
+    });
+  };
+
+  render() {
+    let dayPercent = (this.props.day * 100 / 8).toFixed(2);
+    let weekPercent = (this.props.week * 100 / 40).toFixed(2);
+    let monthPercent = (this.props.month * 100 / 160).toFixed(2);
+
+    return (
+      <Grid container justify="center" alignItems="flex-start">
+        <Grid item xs={12} sm={6} md={4}>
+          <PieChart
+            percent={dayPercent}
+            text={'За этот день'}
+            hours={this.props.day}
+            isLoading={this.state.isLoadingDay}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <PieChart
+            percent={weekPercent}
+            text={'За эту неделю'}
+            hours={this.props.week}
+            isLoading={this.state.isLoadingWeek}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <PieChart
+            percent={monthPercent}
+            text={'За этот месяц'}
+            hours={this.props.month}
+            isLoading={this.state.isLoadingMonth}
+          />
+        </Grid>
+      </Grid>
     );
   }
 }
 
-export default connect(mapStateToProps)(Statistics);
+export default connect(mapStateToProps, mapDispatchToProps)(Statistics);

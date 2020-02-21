@@ -20,7 +20,7 @@ import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Paper from '@material-ui/core/Paper';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-
+import MyTheme from '../MyTheme';
 
 import {
   BrowserRouter as Router,
@@ -59,13 +59,14 @@ class PageHeader extends React.Component {
   render() {
     return (
       <ElevationScroll>
-        <AppBar
+        <Box
+          className={"page-header"}
           component={'header'}
           position="fixed"
-          color="primary"
+          bgcolor="primary.dark"
+          color="text.primary"
         >
-          <Toolbar>
-
+          <Toolbar >
             <IconButton edge="start" aria-label="menu" color="inherit">
               <MenuIcon/>
             </IconButton>
@@ -87,7 +88,7 @@ class PageHeader extends React.Component {
               {this.props.name}
             </Typography>
           </Toolbar>
-        </AppBar>
+        </Box>
       </ElevationScroll>
     )
   }
