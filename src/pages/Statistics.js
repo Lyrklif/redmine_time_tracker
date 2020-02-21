@@ -14,7 +14,7 @@ import {
   periodMonth
 } from "../functions/commandGetStatistics";
 import Grid from "@material-ui/core/Grid";
-import {statistics} from "../actions/actionCreators";
+import {statistics} from "../actions/statistics";
 
 
 const mapStateToProps = state => {
@@ -41,7 +41,7 @@ class Statistics extends React.Component {
       isLoadingMonth: true,
     };
 
-    this.updComponent = this.updComponent.bind(this);
+    this.updComponent = this.updComponent.bind(this); // async, поэтому нужно объявлять так
   }
 
   setStatistics = (name, response) => {
@@ -56,9 +56,9 @@ class Statistics extends React.Component {
   };
 
   componentDidMount() {
-    this.updComponent(periodToday, "day", 'isLoadingDay').then(r => this.setLoaded('isLoadingDay'));
-    this.updComponent(periodWeek, "week", 'isLoadingWeek').then(r => this.setLoaded('isLoadingWeek'));
-    this.updComponent(periodMonth, "month", 'isLoadingMonth').then(r => this.setLoaded('isLoadingMonth'));
+    this.updComponent(periodToday, "day").then(r => this.setLoaded('isLoadingDay'));
+    this.updComponent(periodWeek, "week").then(r => this.setLoaded('isLoadingWeek'));
+    this.updComponent(periodMonth, "month").then(r => this.setLoaded('isLoadingMonth'));
   };
 
   async updComponent(period, name, loadingName) {

@@ -2,12 +2,11 @@
 import mainStore from '../store/mainStore';
 
 import {
+  UPD_APPLICATION_STATUS,
+  UPD_AUTHORIZED,
   UPD_MAIN_STORE,
   UPD_TASKS,
-  UPD_AUTHORIZED,
   UPD_USER_DATA,
-  UPD_APPLICATION_STATUS,
-  UPD_STATISTICS,
 } from '../variables/actionTypes';
 
 /*
@@ -31,21 +30,6 @@ export function setStoreApplicationStatus(name, value) {
     name: name,
     value: value
   });
-}
-
-export function setStoreStatistics(name, value) {
-  mainStore.dispatch({
-    type: UPD_STATISTICS,
-    name: name,
-    value: value
-  });
-}
-export function statistics(name, value) {
-  return {
-    type: UPD_STATISTICS,
-    name: name,
-    value: value
-  };
 }
 
 export function setStoreUser(login, key, url) {
