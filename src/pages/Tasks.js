@@ -1,59 +1,71 @@
-// home
-
-
 import React from "react";
 
-
 import getTasks from '../redmine/getTasks';
-
 import * as IconsLib from "@material-ui/icons";
 
-import Chip from '@material-ui/core/Chip';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Card from '@material-ui/core/Card';
-
-
-import Divider from "@material-ui/core/Divider";
-import Box from '@material-ui/core/Box';
-import Tabs from '@material-ui/core/Tabs';
-import Paper from '@material-ui/core/Paper';
-
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-
 import {connect} from 'react-redux';
-
-
 import Task from '../components/Task';
 
-/**
- *
- * @param state
- * @returns {{skeleton: boolean, api: string, tasks: {}, url: string}}
- */
+import {tasks} from "../actionCreators/tasks";
+import Box from '@material-ui/core/Box';
+import Skeleton from '@material-ui/lab/Skeleton';
+
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
     skeleton: state.application.states.skeleton,
   }
-}
+};
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchTasks: (value) => dispatch(tasks(value)),
+  }
+};
 
 class Tasks extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isLoading: true,
+    };
+
+    this.updComponent = this.updComponent.bind(this); // async, поэтому нужно объявлять так
   }
 
-  render() {
-    let tasks = this.props.tasks;
+  componentDidMount() {
+    this.updComponent().then(r => this.setLoaded());
+  };
 
-    let tasksList = Object.values(tasks).map((elem, index) => {
-      console.log(elem);
+  setTasks = (response) => {
+    response.then(e => {
+      if (e) {
+        let tasks = e.data.issues;
+        this.props.dispatchTasks(tasks);
+      } else {
+
+        console.log('Ошибка в setTasks');
+      }
+    });
+  };
+
+  async updComponent() {
+    let value = getTasks();
+    this.setTasks(value);
+  }
+
+  //TODO спинер не показывается
+  setLoaded = () => {
+    this.setState({
+      isLoading: false
+    });
+  };
+
+  render() {
+    let tasks = Object.values(this.props.tasks);
+
+    let tasksList = tasks.map((elem, index) => {
       return (
         <li key={index} className={'task'}>
           <Task
@@ -71,12 +83,31 @@ class Tasks extends React.Component {
       )
     });
 
+    let skeleton = (
+      <Box
+        component={"li"}
+        my={3}
+      >
+        <Skeleton height={40}/>
+        <Skeleton height={40}/>
+        <Skeleton height={40}/>
+      </Box>
+    );
+
     return (
       <ul className="clear-list tasks-list">
-        {tasksList}
+        {this.state.isLoading ?
+          <>
+            {skeleton}
+            {skeleton}
+            {skeleton}
+          </>
+          :
+          tasksList
+        }
       </ul>
     );
   }
 }
 
-export default connect(mapStateToProps)(Tasks);
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

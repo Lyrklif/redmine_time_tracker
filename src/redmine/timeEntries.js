@@ -1,9 +1,7 @@
 // timeEntries
 import axios from "axios";
-import {setStoreStatistics} from '../actions/actionCreators';
 
-
-import authorization from "./authorization";
+import getAuthorization from "./getAuthorization";
 
 
 /**
@@ -35,7 +33,6 @@ const timeEntries = (id, time, activity, comment) => {
     })
     .catch(error => {
       console.log("timeEntries => error \n", error);
-      return error;
     });
 };
 

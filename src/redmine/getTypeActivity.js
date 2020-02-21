@@ -1,9 +1,7 @@
 
 import axios from "axios";
-import {setStoreStatistics} from '../actions/actionCreators';
 
-
-import authorization from "./authorization";
+import getAuthorization from "./getAuthorization";
 
 
 const getTypeActivity = () => {
@@ -19,7 +17,6 @@ const getTypeActivity = () => {
     })
     .catch(error => {
       console.log("getTypeActivity => error \n", error);
-      return error;
     });
 };
 

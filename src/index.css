@@ -60,11 +60,6 @@ code {
 }
 
 .login-form {
-  display: flex;
-  flex-direction: column;
-
-  padding: 3em 1em;
-  width: calc(100% - 2em);
   max-width: 340px;
 }
 
