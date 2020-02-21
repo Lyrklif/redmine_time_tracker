@@ -18,7 +18,7 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import MyTheme from './MyTheme';
-import {storeAuthorization} from "./actions/actionCreators";
+import {storeAuthorization} from "./actionCreators/storeAuthorization";
 
 
 const mapStateToProps = (state) => {
@@ -38,7 +38,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log('***  Начальные данные ***\n', this.props.data);
+    // console.log('***  Начальные данные ***\n', this.props.data);
 
     const url = localStorage.getItem('url');
     const api = localStorage.getItem('api');
@@ -55,7 +55,7 @@ class App extends React.Component {
       if (e) {
         this.props.dispatchAuthorization(true);
       } else {
-        alert('НЕВЕРНО');
+        alert('Ошибка при авторизации');
       }
     });
   };
@@ -69,25 +69,30 @@ class App extends React.Component {
 
           <PageHeader/>
 
-
           <Box component={'main'} className={'main-content'}>
-            <Switch>
-              <Route exact path='/' render={() => (
-                authorized ? (<Tasks/>) : (<Redirect to="/login"/>)
-              )}/>
+            {authorized ?
+              //TODO переделать, чтобы каждый раз не показывалась форма авторизации
+              <Switch>
+                <Route exact path='/' render={() => (
+                  authorized ? (<Tasks/>) : (<Redirect to="/login"/>)
+                )}/>
 
-              <Route exact path='/tasks' render={() => (
-                authorized ? (<Tasks/>) : (<Redirect to="/login"/>)
-              )}/>
+                <Route exact path='/tasks' render={() => (
+                  authorized ? (<Tasks/>) : (<Redirect to="/login"/>)
+                )}/>
 
-              <Route exact path='/statistics' render={() => (
-                authorized ? (<Statistics/>) : (<Redirect to="/login"/>)
-              )}/>
+                <Route exact path='/statistics' render={() => (
+                  authorized ? (<Statistics/>) : (<Redirect to="/login"/>)
+                )}/>
 
-              <Route exact path='/login' render={() => (
-                authorized ? (<Redirect to="/"/>) : (<Login/>)
-              )}/>
-            </Switch>
+                <Route exact path='/login' render={() => (
+                  authorized ? (<Redirect to="/"/>) : (<Login/>)
+                )}/>
+              </Switch>
+              :
+              <Login/>
+            }
+
           </Box>
         </Box>
       </MuiThemeProvider>

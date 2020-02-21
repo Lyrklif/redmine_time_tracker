@@ -14,7 +14,7 @@ import {
   periodMonth
 } from "../functions/commandGetStatistics";
 import Grid from "@material-ui/core/Grid";
-import {statistics} from "../actions/statistics";
+import {statistics} from "../actionCreators/statistics";
 
 
 const mapStateToProps = state => {

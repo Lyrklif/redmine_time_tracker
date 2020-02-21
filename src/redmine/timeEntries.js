@@ -1,7 +1,5 @@
 // timeEntries
 import axios from "axios";
-import {setStoreStatistics} from '../actions/actionCreators';
-
 
 import getAuthorization from "./getAuthorization";
 

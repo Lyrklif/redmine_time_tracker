@@ -1,7 +1,6 @@
 // getUserData.js
 
 import axios from "axios";
-import {setStoreAuthorized, setStoreUser} from '../actions/actionCreators';
 
 //TODO удалить или понадобится?
 
@@ -12,13 +11,11 @@ import {setStoreAuthorized, setStoreUser} from '../actions/actionCreators';
 //       let userLogin = data.user.login;
 //       let api_key = data.user.api_key;
 //
-//       setStoreUser(userLogin, api_key, url); // записываем данные пользователя
+//       // setStoreUser(userLogin, api_key, url); // записываем данные пользователя
 //
 //       return response;
 //     })
 //     .catch(function (error) {
-//       setStoreAuthorized(false); // изменяем статус на "authorized" на false
-//
 //       console.log("authorization => error \n", error);
 //     });
 // };

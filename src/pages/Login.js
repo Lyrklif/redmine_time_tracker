@@ -10,7 +10,8 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import Box from "@material-ui/core/Box";
-import {storeAuthorization, userInfo} from "../actions/actionCreators";
+import {userInfo} from "../actionCreators/userInfo";
+import {storeAuthorization} from "../actionCreators/storeAuthorization";
 
 
 const mapStateToProps = state => {

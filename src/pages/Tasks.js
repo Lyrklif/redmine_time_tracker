@@ -6,7 +6,7 @@ import * as IconsLib from "@material-ui/icons";
 import {connect} from 'react-redux';
 import Task from '../components/Task';
 
-import {tasks} from "../actions/tasks";
+import {tasks} from "../actionCreators/tasks";
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 
