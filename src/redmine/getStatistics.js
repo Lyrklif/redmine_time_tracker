@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-async function  getStatistics(period){
+function getStatistics(period) {
   const url = localStorage.getItem('url');
   const api = localStorage.getItem('api');
 

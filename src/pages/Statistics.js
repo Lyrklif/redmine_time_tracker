@@ -5,8 +5,6 @@ import * as IconsLib from "@material-ui/icons";
 
 import PieChart from '../components/PieChart';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
-
 import {connect} from "react-redux";
 
 import getStatistics from "../redmine/getStatistics";
@@ -68,12 +66,12 @@ class Statistics extends React.Component {
     this.setStatistics(name, value);
   }
 
+  //TODO спинер не показывается. Возможная причина: статус меняется до того, как store обновится
   setLoaded = (name) => {
     this.setState({
       [name]: false
     });
   };
-
 
   render() {
     let dayPercent = (this.props.day * 100 / 8).toFixed(2);
