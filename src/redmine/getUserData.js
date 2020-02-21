@@ -1,7 +1,7 @@
 // getUserData.js
 
 import axios from "axios";
-import { setStoreAuthorized, setStoreUser } from '../actions/actionCreators';
+import {setStoreAuthorized, setStoreUser} from '../actions/actionCreators';
 
 // получить 
 const getUserData = (url, api) => {
@@ -20,8 +20,7 @@ const getUserData = (url, api) => {
       setStoreAuthorized(false); // изменяем статус на "authorized" на false
 
       console.log("authorization => error \n", error);
-      return error;
     });
-}
+};
 
 export default getUserData;

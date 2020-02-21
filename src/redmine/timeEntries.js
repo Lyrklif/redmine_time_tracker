@@ -35,7 +35,6 @@ const timeEntries = (id, time, activity, comment) => {
     })
     .catch(error => {
       console.log("timeEntries => error \n", error);
-      return error;
     });
 };
 

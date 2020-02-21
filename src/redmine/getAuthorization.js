@@ -1,8 +1,6 @@
 // authorization
 
 import axios from "axios";
-import {setStoreAuthorized, setStoreUser, setStoreApplicationStatus} from '../actions/actionCreators';
-
 
 //TODO перенести всё, кроме запроса к redmine в другие функции
 function getAuthorization(newUrl, newApi) {

@@ -19,7 +19,6 @@ const getTypeActivity = () => {
     })
     .catch(error => {
       console.log("getTypeActivity => error \n", error);
-      return error;
     });
 };
 
