@@ -4,14 +4,30 @@ import axios from "axios";
 import { setStoreTasks } from '../actions/actionCreators';
 
 
-// получить 
-const getTasks = (url, api) => {
+// const getTasks = (url, api) => {
+//   return axios.get(`${url}/issues.json?key=${api}&assigned_to_id=me`)
+//     .then(response => {
+//       let tasks = JSON.parse(response.request.response);
+//
+//       setStoreTasks(tasks.issues); // записать задачи
+//
+//       return response;
+//     })
+//     .catch(function (error) {
+//       console.log("getTasks => error \n", error);
+//       return error;
+//     });
+// }
+
+
+function getTasks() {
+  const url = localStorage.getItem('url');
+  const api = localStorage.getItem('api');
+
   return axios.get(`${url}/issues.json?key=${api}&assigned_to_id=me`)
     .then(response => {
-      let tasks = JSON.parse(response.request.response);
-
-      setStoreTasks(tasks.issues); // записать задачи
-
+      // let tasks = JSON.parse(response.request.response);
+      // setStoreTasks(tasks.issues); // записать задачи
       return response;
     })
     .catch(function (error) {
@@ -21,3 +37,5 @@ const getTasks = (url, api) => {
 }
 
 export default getTasks;
+
+

@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import getTasks from '../redmine/getTasks';
@@ -6,6 +5,11 @@ import * as IconsLib from "@material-ui/icons";
 
 import {connect} from 'react-redux';
 import Task from '../components/Task';
+import {tasks} from "../actions/actionCreators";
+import getStatistics from "../redmine/getStatistics";
+import {periodMonth, periodToday, periodWeek} from "../functions/commandGetStatistics";
+
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 /**
  *
@@ -17,19 +21,51 @@ const mapStateToProps = (state) => {
     tasks: state.tasks,
     skeleton: state.application.states.skeleton,
   }
-}
+};
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchTasks: (value) => dispatch(tasks(value)),
+  }
+};
 
 class Tasks extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isLoading: true,
+    };
+
+    this.updComponent = this.updComponent.bind(this); // async, поэтому нужно объявлять так
   }
+
+  componentDidMount() {
+    this.updComponent().then(r => this.setLoaded());
+  };
+
+  setTasks = (response) => {
+    response.then(e => {
+      let tasks = e.data.issues;
+      this.props.dispatchTasks(tasks);
+    });
+  };
+
+  async updComponent() {
+    let value = getTasks();
+    this.setTasks(value);
+  }
+
+  setLoaded = () => {
+    this.setState({
+      isLoading: false
+    });
+  };
 
   render() {
     let tasks = this.props.tasks;
 
     let tasksList = Object.values(tasks).map((elem, index) => {
-      console.log(elem);
       return (
         <li key={index} className={'task'}>
           <Task
@@ -49,10 +85,14 @@ class Tasks extends React.Component {
 
     return (
       <ul className="clear-list tasks-list">
-        {tasksList}
+        {this.state.isLoading ?
+          <CircularProgress color="secondary" size={40}/>
+          :
+          tasksList
+        }
       </ul>
     );
   }
 }
 
-export default connect(mapStateToProps)(Tasks);
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
