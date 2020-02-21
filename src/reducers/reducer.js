@@ -21,7 +21,7 @@ export default (state, action) => {
           ...state.application,
           states: {
             ...state.application.states,
-            [action.name]: action.value ? action.value : !state.application.states[action.name]
+            [action.name]: action.value !== undefined ? action.value : !state.application.states[action.name]
           }
         }
       });
@@ -37,13 +37,13 @@ export default (state, action) => {
         ...state,
         'statistics': {
           ...state.statistics,
-          [action.name]: action.value ? action.value : 0
+          [action.name]: action.value !== undefined ? action.value : 0
         }
       });
     // авторизован ли пользователь
     case UPD_AUTHORIZED:
       return Object.assign({}, state, {
-        'authorized': action.authorized ? action.authorized : !state.authorized,
+        'authorized': action.authorized !== undefined ? action.authorized : !state.authorized,
       });
     // авторизован ли пользователь
     case UPD_USER_DATA:

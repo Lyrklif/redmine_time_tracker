@@ -3,7 +3,7 @@ import axios from "axios";
 import {setStoreStatistics} from '../actions/actionCreators';
 
 
-import authorization from "./authorization";
+import getAuthorization from "./getAuthorization";
 
 
 /**

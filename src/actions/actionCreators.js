@@ -14,14 +14,17 @@ import {
  */
 //TODO вынести dispatch из action creators
 
-// обновить setStoreTasks
-export function setStoreTasks(value) {
-  mainStore.dispatch({type: UPD_TASKS, value});
-}
 
 // обновить authorized
 export function setStoreAuthorized(authorized) {
   mainStore.dispatch({type: UPD_AUTHORIZED, authorized: authorized});
+}
+
+export function storeAuthorization(authorized) {
+  return {
+    type: UPD_AUTHORIZED,
+    authorized: authorized
+  };
 }
 
 export function setStoreApplicationStatus(name, value) {
@@ -39,6 +42,15 @@ export function setStoreUser(login, key, url) {
     key: key,
     url: url
   });
+}
+
+export function userInfo(login, key, url) {
+  return {
+    type: UPD_USER_DATA,
+    login: login,
+    key: key,
+    url: url
+  };
 }
 
 // обновить статусы

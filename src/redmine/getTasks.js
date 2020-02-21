@@ -10,7 +10,6 @@ function getTasks() {
     })
     .catch(function (error) {
       console.log("getTasks => error \n", error);
-      return error;
     });
 }
 

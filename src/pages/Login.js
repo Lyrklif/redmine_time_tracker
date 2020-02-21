@@ -1,33 +1,29 @@
-// login
 import React from "react";
 
-import getTasks from "../redmine/getTasks";
-import authorization from "../redmine/authorization";
-import { connect } from "react-redux";
+import getAuthorization from "../redmine/getAuthorization";
+import {connect} from "react-redux";
 
 import * as IconsLib from "@material-ui/icons";
 
-import Chip from "@material-ui/core/Chip";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
 
-import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
-import Tabs from "@material-ui/core/Tabs";
-import Paper from "@material-ui/core/Paper";
+import {storeAuthorization, userInfo} from "../actions/actionCreators";
+
 
 const mapStateToProps = state => {
   return {
     authorized: state.authorized
   };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchAuthorization: (value) => dispatch(storeAuthorization(value)),
+    dispatchUserInfo: (login, key, url) => dispatch(userInfo(login, key, url)),
+  }
 };
 
 class Login extends React.Component {
@@ -36,35 +32,53 @@ class Login extends React.Component {
 
     this.state = {
       url: "",
-      api: ""
+      api: "",
     };
   }
 
+  setAuthorization = (response) => {
+    response.then(e => {
+      if (e) {
+        localStorage.setItem('url', this.state.url);
+        localStorage.setItem('api', this.state.api);
+
+        let login = e.data.user.login;
+
+        //TODO зписывать в случаевторизации через логин/пароль
+        // let apiKey = e.data.user.api_key;
+
+        this.props.dispatchAuthorization(true);
+        this.props.dispatchUserInfo(login, this.state.api, this.state.url);
+      } else {
+        //TODO добавить обработку неверных данных
+        alert('Неверные данные');
+      }
+    });
+  };
+
+  updComponent = () => {
+    let value = getAuthorization(this.state.url, this.state.api);
+    this.setAuthorization(value);
+  };
+
   handleSubmit = e => {
     e.preventDefault();
-
-    this.getIssues();
+    this.updComponent(this.state.url, this.state.api);
   };
 
-  getIssues = () => {
-    authorization(this.state.url, this.state.api);
-  };
 
   setUrl = e => {
     e.preventDefault();
-    let value = e.target.value.trim(); // значение без пробелов
+    let url = e.target.value.trim(); // значение без пробелов
 
-    // если последний символ /
-    if (value.endsWith("/")) {
-      value = value.substring(0, value.length - 1); // удалить последний символ
+    if (url.endsWith("/")) {
+      url = url.substring(0, url.length - 1); // удалить последний символ
     }
-
-    this.setState({ url: value });
+    this.setState({url: url});
   };
 
   setApi = e => {
     e.preventDefault();
-
     this.setState({
       api: e.target.value.trim()
     });
@@ -76,12 +90,9 @@ class Login extends React.Component {
         component={"form"}
         onSubmit={this.handleSubmit}
         className={"login-form"}
-        bgcolor="primary.main"
         mx="auto"
         display="flex"
-        flexDirection="column" 
-        borderRadius="borderRadius"
-        boxShadow={2}
+        flexDirection="column"
       >
         <TextField
           label="Redmine Url"
@@ -94,7 +105,7 @@ class Login extends React.Component {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <IconsLib.Https />
+                <IconsLib.Https/>
               </InputAdornment>
             )
           }}
@@ -111,7 +122,7 @@ class Login extends React.Component {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <IconsLib.VpnKey />
+                <IconsLib.VpnKey/>
               </InputAdornment>
             )
           }}
@@ -132,4 +143,4 @@ class Login extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

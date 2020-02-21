@@ -2,13 +2,9 @@ import React from "react";
 
 import "./App.css";
 
-import Button from '@material-ui/core/Button';
-
 import PageHeader from "./components/PageHeader";
 
-import getTasks from './redmine/getTasks';
 import {connect} from 'react-redux';
-import axios from "axios";
 
 import Login from './pages/Login';
 import Tasks from './pages/Tasks';
@@ -16,18 +12,13 @@ import Statistics from './pages/Statistics';
 
 import Box from '@material-ui/core/Box';
 
-import authorization from './redmine/authorization';
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import getAuthorization from './redmine/getAuthorization';
+import {Redirect, Route, Switch} from 'react-router-dom';
 
 
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import MyTheme from './MyTheme';
-
-
-
-
-
-
+import {storeAuthorization} from "./actions/actionCreators";
 
 
 const mapStateToProps = (state) => {
@@ -39,15 +30,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // onReceiveImpressions: (...vars) => dispatch(actionName(vars)),
+    dispatchAuthorization: (value) => dispatch(storeAuthorization(value)),
   }
 };
-
-
-
-
-
-
 
 class App extends React.Component {
   constructor(props) {
@@ -55,12 +40,25 @@ class App extends React.Component {
 
     console.log('***  Начальные данные ***\n', this.props.data);
 
-
     const url = localStorage.getItem('url');
     const api = localStorage.getItem('api');
 
-    if (url && api) authorization(url, api);
+    //TODO решить что с этим делать
+    if (url && api) {
+      let value = getAuthorization(url, api);
+      this.setAuthorization(value);
+    }
   }
+
+  setAuthorization = (response) => {
+    response.then(e => {
+      if (e) {
+        this.props.dispatchAuthorization(true);
+      } else {
+        alert('НЕВЕРНО');
+      }
+    });
+  };
 
   render() {
     let authorized = this.props.authorized;

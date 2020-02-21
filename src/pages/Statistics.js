@@ -46,12 +46,17 @@ class Statistics extends React.Component {
 
   setStatistics = (name, response) => {
     response.then(e => {
-      const data = e.data.time_entries;
-      let hours = 0;
-      data.forEach(elem => hours += elem.hours);
-      hours = +hours.toFixed(2);
+      if (e) {
+        const data = e.data.time_entries;
+        let hours = 0;
+        data.forEach(elem => hours += elem.hours);
+        hours = +hours.toFixed(2);
 
-      this.props.dispatchStatistics(name, hours);
+        this.props.dispatchStatistics(name, hours);
+      } else {
+        alert('Ошибка в setStatistics');
+      }
+
     });
   };
 

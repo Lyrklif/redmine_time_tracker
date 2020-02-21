@@ -6,9 +6,9 @@ import * as IconsLib from "@material-ui/icons";
 import {connect} from 'react-redux';
 import Task from '../components/Task';
 
-import CircularProgress from "@material-ui/core/CircularProgress";
 import {tasks} from "../actions/tasks";
-
+import Box from '@material-ui/core/Box';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const mapStateToProps = (state) => {
   return {
@@ -40,8 +40,13 @@ class Tasks extends React.Component {
 
   setTasks = (response) => {
     response.then(e => {
-      let tasks = e.data.issues;
-      this.props.dispatchTasks(tasks);
+      if (e) {
+        let tasks = e.data.issues;
+        this.props.dispatchTasks(tasks);
+      } else {
+
+        console.log('Ошибка в setTasks');
+      }
     });
   };
 
@@ -58,9 +63,9 @@ class Tasks extends React.Component {
   };
 
   render() {
-    let tasks = this.props.tasks;
+    let tasks = Object.values(this.props.tasks);
 
-    let tasksList = Object.values(tasks).map((elem, index) => {
+    let tasksList = tasks.map((elem, index) => {
       return (
         <li key={index} className={'task'}>
           <Task
@@ -78,10 +83,25 @@ class Tasks extends React.Component {
       )
     });
 
+    let skeleton = (
+      <Box
+        component={"li"}
+        my={3}
+      >
+        <Skeleton height={40}/>
+        <Skeleton height={40}/>
+        <Skeleton height={40}/>
+      </Box>
+    );
+
     return (
       <ul className="clear-list tasks-list">
         {this.state.isLoading ?
-          <CircularProgress color="secondary" size={40}/>
+          <>
+            {skeleton}
+            {skeleton}
+            {skeleton}
+          </>
           :
           tasksList
         }

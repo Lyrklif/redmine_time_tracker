@@ -11,7 +11,6 @@ function getStatistics(period) {
     })
     .catch(function (error) {
       console.log("getStatistics => error \n", error);
-      return error;
     });
 }
 
