@@ -1,8 +1,6 @@
 import axios from "axios";
 
 function getAuthorization(key, newUrl, newApiOrLogin, pass) {
-  console.log('auth', key, newUrl, newApiOrLogin, pass);
-  
   const url = newUrl ? newUrl : localStorage.getItem("url");
   const apiOrLogin = newApiOrLogin ? newApiOrLogin : localStorage.getItem("api");
 
