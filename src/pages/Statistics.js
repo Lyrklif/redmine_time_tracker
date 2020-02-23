@@ -66,7 +66,7 @@ class Statistics extends React.Component {
     this.updComponent(periodMonth, "month").then(r => this.setLoaded('isLoadingMonth'));
   };
 
-  async updComponent(period, name, loadingName) {
+  async updComponent(period, name) {
     let value = getStatistics(period);
     this.setStatistics(name, value);
   }
