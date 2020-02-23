@@ -78,7 +78,7 @@ class Task extends React.Component {
       <Box
         bgcolor="primary.light"
         p={2}
-        color="text.primary"
+        color="primary.contrastText"
         borderRadius="borderRadius"
       >
         <Grid container>
@@ -91,7 +91,7 @@ class Task extends React.Component {
               variant="body2"
               gutterBottom
               component="h3"
-              color="text.primary"
+              color="inherit"
             >
               {this.props.subject}
             </Typography>
@@ -126,9 +126,9 @@ class Task extends React.Component {
                       } : start}
                     >
                       {this.state.play ? (
-                        <IconsLib.Stop color="text.secondary"/>
+                        <IconsLib.Stop color="secondary"/>
                       ) : (
-                        <IconsLib.PlayArrow color="text.secondary"/>
+                        <IconsLib.PlayArrow color="secondary"/>
                       )}
                     </Button>
                     <Box m={1}/>

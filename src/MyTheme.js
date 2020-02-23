@@ -47,10 +47,6 @@ export default createMuiTheme({
       MuiButton: {
         root: {
           minWidth: "40px",
-
-          // "&$active": {
-          //   boxShadow: '0px 0px 0px 6px rgba(181, 181, 192, 0.2)',
-          // },
         }
       },
       
