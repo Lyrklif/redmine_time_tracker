@@ -5,38 +5,22 @@ import React from "react";
 import * as IconsLib from "@material-ui/icons";
 
 import Chip from "@material-ui/core/Chip";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
-
 import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
-import Tabs from "@material-ui/core/Tabs";
-import Paper from "@material-ui/core/Paper";
-
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-
-import {connect} from "react-redux";
-
-import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/styles";
-
-import {makeStyles} from "@material-ui/core/styles";
 import MyTheme from "../MyTheme";
-import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import Timer from 'react-compound-timer';
-import moment from 'moment';
 
 import timeEntries from '../redmine/timeEntries';
-import axios from "axios";
-
 
 const redTheme = createMuiTheme(MyTheme.palette.stop);
 
@@ -50,7 +34,14 @@ class Task extends React.Component {
       minutes: 0,
       hours: 0,
       timer: 0,
+      activity: Object.keys(this.props.activities)[0],
     };
+  }
+
+  changeActivity = (e) => {
+    let value = e.target.value;
+
+    this.setState({ activity: value });
   }
 
   switchPlay = (value) => {
@@ -69,11 +60,21 @@ class Task extends React.Component {
     this.switchPlay(false);
     // timeEntries(this.props.id, hours, 9, 'test05'); // ****** РАБОТАЕТ
 
-    //TODO отправлять activity и comment
-    // timeEntries(this.props.id, hours, 9, 'test05'); // [id, time, activity, comment]
+    //TODO отправлять comment
+    // timeEntries(this.props.id, hours, this.state.activity, 'test05'); // [id, time, activity, comment]
   };
 
   render() {
+    let activityKeys = Object.keys(this.props.activities);
+    let activityValues = Object.values(this.props.activities);
+
+    let activities = activityKeys.map((elem, i) => {
+      return (
+        <MenuItem key={i} value={elem}>{activityValues[i]}</MenuItem>
+      );
+    });
+
+
     return (
       <Box
         bgcolor="primary.light"
@@ -109,7 +110,7 @@ class Task extends React.Component {
               formatValue={(value) => `${(value < 10 ? `0${value}` : value)}`}
               onStart={() => this.startTimer()}
             >
-              {({start, resume, pause, stop, reset, getTimerState, getTime}) => (
+              {({ start, resume, pause, stop, reset, getTimerState, getTime }) => (
                 <>
                   <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
                     <Button
@@ -126,19 +127,19 @@ class Task extends React.Component {
                       } : start}
                     >
                       {this.state.play ? (
-                        <IconsLib.Stop color="secondary"/>
+                        <IconsLib.Stop color="secondary" />
                       ) : (
-                        <IconsLib.PlayArrow color="secondary"/>
-                      )}
+                          <IconsLib.PlayArrow color="secondary" />
+                        )}
                     </Button>
-                    <Box m={1}/>
-                    <Timer.Hours/>:<Timer.Minutes/>:<Timer.Seconds/>
+                    <Box m={1} />
+                    <Timer.Hours />:<Timer.Minutes />:<Timer.Seconds />
                   </MuiThemeProvider>
                 </>
               )}
             </Timer>
 
-            <Box m={1}/>
+            <Box m={1} />
 
           </Grid>
         </Grid>
@@ -150,8 +151,18 @@ class Task extends React.Component {
           затрекано:
           {this.props.spent_hours ? this.props.spent_hours.toFixed(2) : 0}
         </Box>
+
+        <FormControl >
+          <Select
+            value={this.state.activity}
+            onChange={this.changeActivity}
+          >
+            {activities}
+          </Select>
+        </FormControl>
+
         <Box m={1}>
-          <Divider/>
+          <Divider />
         </Box>
 
         {this.props.priority && (
@@ -161,13 +172,6 @@ class Task extends React.Component {
             label={`${this.props.priority}`}
           />
         )}
-        {/*{this.props.status && (*/}
-        {/*  <Chip*/}
-        {/*    variant="outlined"*/}
-        {/*    size="small"*/}
-        {/*    label={`${this.props.status}`}*/}
-        {/*  />*/}
-        {/*)}*/}
         {this.props.start_date && this.props.due_date && (
           <Chip
             variant="outlined"

@@ -10,6 +10,7 @@ import {
   UPD_APPLICATION_STATUS,
   UPD_STATISTICS,
   UPD_LOGIN,
+  UPD_ACTIVITIES,
 } from '../variables/actionTypes';
 
 export default (state, action) => {
@@ -53,6 +54,11 @@ export default (state, action) => {
     case UPD_AUTHORIZED:
       return Object.assign({}, state, {
         'authorized': action.authorized !== undefined ? action.authorized : !state.authorized,
+      });
+    // авторизован ли пользователь
+    case UPD_ACTIVITIES:
+      return Object.assign({}, state, {
+        'activities': action.value,
       });
     // авторизован ли пользователь
     case UPD_USER_DATA:

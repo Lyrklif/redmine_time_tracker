@@ -1,25 +1,28 @@
 import React from "react";
 
 import getTasks from '../redmine/getTasks';
+import getTypeActivity from '../redmine/getTypeActivity';
 import * as IconsLib from "@material-ui/icons";
 
 import { connect } from 'react-redux';
 import Task from '../components/Task';
 
 import { tasks } from "../actionCreators/tasks";
+import { activities } from "../actionCreators/activities";
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
-    skeleton: state.application.states.skeleton,
+    activities: state.activities,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     dispatchTasks: (value) => dispatch(tasks(value)),
+    dispatchActivities: (value) => dispatch(activities(value)),
   }
 };
 
@@ -39,6 +42,9 @@ class Tasks extends React.Component {
   showCurrentComponent = () => {
     let value = getTasks();
     this.setTasks(value);
+
+    let activities = getTypeActivity();
+    this.setActivities(activities);
   };
 
   setTasks = (response) => {
@@ -53,6 +59,19 @@ class Tasks extends React.Component {
       }
     });
   };
+
+  setActivities = (response) => {
+    response.then(e => {
+      if (e) {
+        let activities = e.data.time_entry_activities;
+
+        let result = {};
+        activities.forEach(elem => result[elem.id] = elem.name);
+
+        this.props.dispatchActivities(result);     
+      }
+    });
+  }
 
   setLoaded = () => {
     this.setState({
@@ -76,6 +95,7 @@ class Tasks extends React.Component {
             due_date={elem.due_date}
             estimated_hours={elem.estimated_hours}
             spent_hours={elem.spent_hours}
+            activities={this.props.activities}
           />
         </li>
       )
