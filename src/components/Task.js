@@ -1,9 +1,6 @@
-// home
 
 import React from "react";
-
 import * as IconsLib from "@material-ui/icons";
-
 import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -12,11 +9,10 @@ import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
 import MyTheme from "../MyTheme";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 
 import Timer from 'react-compound-timer';
 
@@ -35,13 +31,18 @@ class Task extends React.Component {
       hours: 0,
       timer: 0,
       activity: Object.keys(this.props.activities)[0],
+      comment: '',
     };
   }
 
   changeActivity = (e) => {
     let value = e.target.value;
-
     this.setState({ activity: value });
+  }
+  
+  changeComment = (e) => {
+    let value = e.target.value;
+    this.setState({ comment: value });
   }
 
   switchPlay = (value) => {
@@ -58,10 +59,9 @@ class Task extends React.Component {
     let hours = (milliseconds / (1000 * 60 * 60)).toFixed(2);
 
     this.switchPlay(false);
-    // timeEntries(this.props.id, hours, 9, 'test05'); // ****** РАБОТАЕТ
 
-    //TODO отправлять comment
-    // timeEntries(this.props.id, hours, this.state.activity, 'test05'); // [id, time, activity, comment]
+    //TODO вкл/выкл отправку времени
+    timeEntries(this.props.id, hours, this.state.activity, this.state.comment); 
   };
 
   render() {
@@ -160,6 +160,17 @@ class Task extends React.Component {
             {activities}
           </Select>
         </FormControl>
+
+        <Box my={1}>
+          <TextField 
+            variant="outlined" 
+            multiline 
+            className={"textarea"}
+            value={this.state.comment}
+            onChange={this.changeComment}
+            />
+        </Box>
+
 
         <Box m={1}>
           <Divider />

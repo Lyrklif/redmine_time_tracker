@@ -85,6 +85,11 @@ code {
   z-index: 999;
 }
 
+.textarea {
+  width: 100%;
+  display: block;
+}
+
 
 /* button:active {
   -webkit-box-shadow: 0px 0px 0px 6px rgba(181, 181, 192, 0.2) !important;
