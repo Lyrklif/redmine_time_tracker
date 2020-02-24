@@ -46,16 +46,6 @@ class App extends React.Component {
     this.state = {
       isLoading: true
     };
-
-    // console.log('***  Начальные данные ***\n', this.props.data);
-
-    // const url = localStorage.getItem('url');
-    // const api = localStorage.getItem('api');
-
-    // if (url && api) {
-    //   let value = getAuthorization("api", url, api);
-    //   this.setAuthorization(value);
-    // }
   }
 
   componentDidMount() {
@@ -99,7 +89,7 @@ class App extends React.Component {
 
           <Box component={'main'} className={'main-content'}>
             {authorized ?
-              //TODO переделать, чтобы каждый раз не показывалась форма авторизации
+
               <Switch>
                 <Route exact path='/' render={() => (
                   authorized ? (<Tasks />) : (<Redirect to="/login" />)

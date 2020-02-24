@@ -13,6 +13,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import Timer from 'react-compound-timer';
 
@@ -32,23 +35,22 @@ class Task extends React.Component {
       timer: 0,
       activity: Object.keys(this.props.activities)[0],
       comment: '',
+      showAlert: false,
+      alertType: '',
+      alertText: '',
     };
   }
 
   changeActivity = (e) => {
-    let value = e.target.value;
-    this.setState({ activity: value });
+    this.setState({ activity: e.target.value });
   }
-  
+
   changeComment = (e) => {
-    let value = e.target.value;
-    this.setState({ comment: value });
+    this.setState({ comment: e.target.value });
   }
 
   switchPlay = (value) => {
-    this.setState(state => ({
-      play: value ? value : !this.state.play
-    }));
+    this.setState({ play: value ? value : !this.state.play })
   };
 
   startTimer = () => {
@@ -61,8 +63,37 @@ class Task extends React.Component {
     this.switchPlay(false);
 
     //TODO вкл/выкл отправку времени
-    timeEntries(this.props.id, hours, this.state.activity, this.state.comment); 
+    let entries = timeEntries(this.props.id, hours, this.state.activity, this.state.comment);
+    this.feedback(entries);
   };
+
+  feedback = (response) => {
+    response.then(e => {
+      if (e) {
+        this.setState({
+          showAlert: true,
+          alertType: 'success',
+          alertText: 'Время учтено'
+        });
+      } else {
+        this.setState({
+          showAlert: true,
+          alertType: 'error',
+          alertText: 'Ошибка при отправке данных'
+        });
+      }
+    });
+
+
+  }
+
+  closeAlert = () => {
+    this.setState({
+      showAlert: false,
+      alertType: '',
+      alertText: ''
+    });
+  }
 
   render() {
     let activityKeys = Object.keys(this.props.activities);
@@ -76,122 +107,135 @@ class Task extends React.Component {
 
 
     return (
-      <Box
-        bgcolor="primary.light"
-        p={2}
-        color="primary.contrastText"
-        borderRadius="borderRadius"
-      >
-        <Grid container>
-          <Grid item xs={12} sm={9}>
-            <Typography color="textSecondary" variant="caption">
-              {this.props.id} {this.props.project}
-            </Typography>
+      <>
+        <Box
+          bgcolor="primary.light"
+          p={2}
+          color="primary.contrastText"
+          borderRadius="borderRadius"
+        >
+          <Grid container>
+            <Grid item xs={12} sm={9}>
+              <Typography color="textSecondary" variant="caption">
+                {this.props.id} {this.props.project}
+              </Typography>
 
-            <Typography
-              variant="body2"
-              gutterBottom
-              component="h3"
-              color="inherit"
+              <Typography
+                variant="body2"
+                gutterBottom
+                component="h3"
+                color="inherit"
+              >{this.props.subject}</Typography>
+            </Grid>
+
+            <Grid
+              container
+              item
+              xs={12}
+              sm={3}
+              alignItems="center"
+              justify="flex-end"
             >
-              {this.props.subject}
-            </Typography>
+              <Timer
+                startImmediately={false}
+                formatValue={(value) => `${(value < 10 ? `0${value}` : value)}`}
+                onStart={() => this.startTimer()}
+              >
+                {({ start, resume, pause, stop, reset, getTimerState, getTime }) => (
+                  <>
+                    <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
+                      <Button
+                        theme={this.state.play ? redTheme : MyTheme}
+                        variant={"outlined"}
+                        size="small"
+                        color={"secondary"}
+                        onClick={this.state.play ? () => {
+                          {
+                            stop();
+                            this.stopTimer(getTime());
+                            reset();
+                          }
+                        } : start}
+                      >
+                        {this.state.play ? (
+                          <IconsLib.Stop color="secondary" />
+                        ) : (
+                            <IconsLib.PlayArrow color="secondary" />
+                          )}
+                      </Button>
+                      <Box m={1} />
+                      <Timer.Hours />:<Timer.Minutes />:<Timer.Seconds />
+                    </MuiThemeProvider>
+                  </>
+                )}
+              </Timer>
+
+              <Box m={1} />
+
+            </Grid>
           </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            sm={3}
-            alignItems="center"
-            justify="flex-end"
-          >
-            <Timer
-              startImmediately={false}
-              formatValue={(value) => `${(value < 10 ? `0${value}` : value)}`}
-              onStart={() => this.startTimer()}
-            >
-              {({ start, resume, pause, stop, reset, getTimerState, getTime }) => (
-                <>
-                  <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
-                    <Button
-                      theme={this.state.play ? redTheme : MyTheme}
-                      variant={"outlined"}
-                      size="small"
-                      color={this.state.play ? "secondary" : "secondary"}
-                      onClick={this.state.play ? () => {
-                        {
-                          stop();
-                          this.stopTimer(getTime());
-                          reset();
-                        }
-                      } : start}
-                    >
-                      {this.state.play ? (
-                        <IconsLib.Stop color="secondary" />
-                      ) : (
-                          <IconsLib.PlayArrow color="secondary" />
-                        )}
-                    </Button>
-                    <Box m={1} />
-                    <Timer.Hours />:<Timer.Minutes />:<Timer.Seconds />
-                  </MuiThemeProvider>
-                </>
-              )}
-            </Timer>
 
-            <Box m={1} />
-
-          </Grid>
-        </Grid>
-
-        <Box m={1}>
-          План:
+          <Box m={1}>
+            План:
           {this.props.estimated_hours ? this.props.estimated_hours : 0}
-          =>
-          затрекано:
+            =>
+            затрекано:
           {this.props.spent_hours ? this.props.spent_hours.toFixed(2) : 0}
-        </Box>
+          </Box>
 
-        <FormControl >
-          <Select
-            value={this.state.activity}
-            onChange={this.changeActivity}
-          >
-            {activities}
-          </Select>
-        </FormControl>
+          <FormControl >
+            <Select
+              value={this.state.activity}
+              onChange={this.changeActivity}
+            >
+              {activities}
+            </Select>
+          </FormControl>
 
-        <Box my={1}>
-          <TextField 
-            variant="outlined" 
-            multiline 
-            className={"textarea"}
-            value={this.state.comment}
-            onChange={this.changeComment}
+          <Box my={1}>
+            <TextField
+              variant="outlined"
+              multiline
+              className={"textarea"}
+              value={this.state.comment}
+              onChange={this.changeComment}
             />
+          </Box>
+
+
+          <Box m={1}>
+            <Divider />
+          </Box>
+
+          {this.props.priority && (
+            <Chip
+              variant="outlined"
+              size="small"
+              label={`${this.props.priority}`}
+            />
+          )}
+          {this.props.start_date && this.props.due_date && (
+            <Chip
+              variant="outlined"
+              size="small"
+              label={`c ${this.props.start_date} до ${this.props.due_date}`}
+            />
+          )}
+
         </Box>
 
-
-        <Box m={1}>
-          <Divider />
-        </Box>
-
-        {this.props.priority && (
-          <Chip
-            variant="outlined"
-            size="small"
-            label={`${this.props.priority}`}
-          />
-        )}
-        {this.props.start_date && this.props.due_date && (
-          <Chip
-            variant="outlined"
-            size="small"
-            label={`c ${this.props.start_date} до ${this.props.due_date}`}
-          />
-        )}
-
-      </Box>
+        {this.state.showAlert &&
+          <Snackbar open={this.state.showAlert} autoHideDuration={6000} onClose={this.closeAlert}>
+            <Alert
+              variant="filled"
+              severity={this.state.alertType}
+              onClose={this.closeAlert}
+            >
+              {this.state.alertText}
+            </Alert>
+          </Snackbar>
+        }
+      </>
     );
   }
 }
