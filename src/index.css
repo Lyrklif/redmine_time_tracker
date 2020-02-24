@@ -7,6 +7,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.preloader {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+}
+
 .App {
   min-height: 100vh;
 }
@@ -18,7 +31,7 @@ body {
 
 @media (min-width: 1200px) {
   .main-content {
-    padding: 200px 1em 100px 1em;
+    padding-top: 150px;
   }
 }
 
@@ -50,6 +63,7 @@ code {
 .clear-list li:first-of-type {
   margin-top: 0;
 }
+
 .clear-list li:last-of-type {
   bottom: 0;
 }
@@ -76,7 +90,7 @@ code {
   align-self: flex-end;
 }
 
-.login-form__switch > label {
+.login-form__switch>label {
   margin-right: 0;
 }
 
