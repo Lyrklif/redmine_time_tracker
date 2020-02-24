@@ -19,6 +19,7 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import MyTheme from './MyTheme';
 import {storeAuthorization} from "./actionCreators/storeAuthorization";
+import {storeLogin} from "./actionCreators/storeLogin";
 
 
 const mapStateToProps = (state) => {
@@ -31,6 +32,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatchAuthorization: (value) => dispatch(storeAuthorization(value)),
+    dispatchLogin: (value) => dispatch(storeLogin(value)),
   }
 };
 
@@ -45,7 +47,7 @@ class App extends React.Component {
 
     //TODO решить что с этим делать
     if (url && api) {
-      let value = getAuthorization(url, api);
+      let value = getAuthorization("api", url, api);
       this.setAuthorization(value);
     }
   }
@@ -54,6 +56,9 @@ class App extends React.Component {
     response.then(e => {
       if (e) {
         this.props.dispatchAuthorization(true);
+
+        const login = localStorage.getItem('login');
+        this.props.dispatchLogin(login);
       } else {
         alert('Ошибка при авторизации');
       }
@@ -67,7 +72,7 @@ class App extends React.Component {
       <MuiThemeProvider theme={MyTheme}>
         <Box className="App" bgcolor="primary.main">
 
-          <PageHeader/>
+        {authorized && <PageHeader/>}
 
           <Box component={'main'} className={'main-content'}>
             {authorized ?

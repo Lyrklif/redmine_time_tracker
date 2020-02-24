@@ -5,7 +5,7 @@ import * as IconsLib from "@material-ui/icons";
 
 import PieChart from '../components/PieChart';
 
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 import getStatistics from "../redmine/getStatistics";
 import {
@@ -14,7 +14,7 @@ import {
   periodMonth
 } from "../functions/commandGetStatistics";
 import Grid from "@material-ui/core/Grid";
-import {statistics} from "../actionCreators/statistics";
+import { statistics } from "../actionCreators/statistics";
 
 
 const mapStateToProps = state => {
@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatchStatistics: (name, value) => dispatch(statistics(name, value)),
-  }
+  };
 };
 
 class Statistics extends React.Component {
@@ -38,13 +38,22 @@ class Statistics extends React.Component {
     this.state = {
       isLoadingDay: true,
       isLoadingWeek: true,
-      isLoadingMonth: true,
+      isLoadingMonth: true
     };
-
-    this.updComponent = this.updComponent.bind(this); // async, поэтому нужно объявлять так
   }
 
-  setStatistics = (name, response) => {
+  componentDidMount() {
+    this.showCurrentComponent(periodToday, "day", 'isLoadingDay');
+    this.showCurrentComponent(periodWeek, "week", 'isLoadingWeek');
+    this.showCurrentComponent(periodMonth, "month", 'isLoadingMonth');
+  };
+
+  showCurrentComponent = (period, name, isLoadingName) => {
+    let value = getStatistics(period);
+    this.setStatistics(name, value, isLoadingName);
+  };
+
+  setStatistics = (name, response, isLoadingName) => {
     response.then(e => {
       if (e) {
         const data = e.data.time_entries;
@@ -53,25 +62,14 @@ class Statistics extends React.Component {
         hours = +hours.toFixed(2);
 
         this.props.dispatchStatistics(name, hours);
-      } else {
-        alert('Ошибка в setStatistics');
-      }
 
+        this.setLoaded(isLoadingName);
+      } else {
+        alert('Ошибка в setStatistics. Попробуйте перезагрузить страницу');
+      }
     });
   };
 
-  componentDidMount() {
-    this.updComponent(periodToday, "day").then(r => this.setLoaded('isLoadingDay'));
-    this.updComponent(periodWeek, "week").then(r => this.setLoaded('isLoadingWeek'));
-    this.updComponent(periodMonth, "month").then(r => this.setLoaded('isLoadingMonth'));
-  };
-
-  async updComponent(period, name, loadingName) {
-    let value = getStatistics(period);
-    this.setStatistics(name, value);
-  }
-
-  //TODO спинер не показывается. Возможная причина: статус меняется до того, как store обновится
   setLoaded = (name) => {
     this.setState({
       [name]: false
@@ -88,7 +86,7 @@ class Statistics extends React.Component {
         <Grid item xs={12} sm={6} md={4}>
           <PieChart
             percent={dayPercent}
-            text={'За этот день'}
+            text={'За день'}
             hours={this.props.day}
             isLoading={this.state.isLoadingDay}
           />
@@ -96,7 +94,7 @@ class Statistics extends React.Component {
         <Grid item xs={12} sm={6} md={4}>
           <PieChart
             percent={weekPercent}
-            text={'За эту неделю'}
+            text={'За неделю'}
             hours={this.props.week}
             isLoading={this.state.isLoadingWeek}
           />
@@ -104,7 +102,7 @@ class Statistics extends React.Component {
         <Grid item xs={12} sm={6} md={4}>
           <PieChart
             percent={monthPercent}
-            text={'За этот месяц'}
+            text={'За месяц'}
             hours={this.props.month}
             isLoading={this.state.isLoadingMonth}
           />

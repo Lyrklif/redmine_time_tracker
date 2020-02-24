@@ -1,13 +1,30 @@
-// authorization
-
 import axios from "axios";
 
-//TODO перенести всё, кроме запроса к redmine в другие функции
-function getAuthorization(newUrl, newApi) {
-  const url = newUrl ? newUrl : localStorage.getItem('url');
-  const api = newApi ? newApi : localStorage.getItem('api');
+function getAuthorization(key, newUrl, newApiOrLogin, pass) {
+  const url = newUrl ? newUrl : localStorage.getItem("url");
+  const apiOrLogin = newApiOrLogin ? newApiOrLogin : localStorage.getItem("api");
 
-  return axios.get(`${url}/users/current.json?key=${api}`)
+  let request;
+  let requestParams = {};
+
+  switch (key) {
+    case "api":
+      request = `${url}/users/current.json?key=${apiOrLogin}`;
+      break;
+    case "login":
+      request = `${url}/users/current.json`;
+      requestParams = {
+        auth: {
+          username: apiOrLogin,
+          password: pass
+        }
+      };
+      break;
+    default:
+      break;
+  }
+
+  return axios.get(request, requestParams)
     .then(response => {
       return response;
     })

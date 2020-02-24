@@ -1,25 +1,28 @@
 import React from "react";
 
 import getTasks from '../redmine/getTasks';
+import getTypeActivity from '../redmine/getTypeActivity';
 import * as IconsLib from "@material-ui/icons";
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Task from '../components/Task';
 
-import {tasks} from "../actionCreators/tasks";
+import { tasks } from "../actionCreators/tasks";
+import { activities } from "../actionCreators/activities";
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
-    skeleton: state.application.states.skeleton,
+    activities: state.activities,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     dispatchTasks: (value) => dispatch(tasks(value)),
+    dispatchActivities: (value) => dispatch(activities(value)),
   }
 };
 
@@ -28,14 +31,20 @@ class Tasks extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: true,
+      isLoading: true
     };
-
-    this.updComponent = this.updComponent.bind(this); // async, поэтому нужно объявлять так
   }
 
   componentDidMount() {
-    this.updComponent().then(r => this.setLoaded());
+    this.showCurrentComponent();
+  };
+
+  showCurrentComponent = () => {
+    let value = getTasks();
+    this.setTasks(value);
+
+    let activities = getTypeActivity();
+    this.setActivities(activities);
   };
 
   setTasks = (response) => {
@@ -43,19 +52,27 @@ class Tasks extends React.Component {
       if (e) {
         let tasks = e.data.issues;
         this.props.dispatchTasks(tasks);
-      } else {
 
-        console.log('Ошибка в setTasks');
+        this.setLoaded();
+      } else {
+        console.log('Ошибка в setTasks. Попробуйте перезагрузить страницу');
       }
     });
   };
 
-  async updComponent() {
-    let value = getTasks();
-    this.setTasks(value);
+  setActivities = (response) => {
+    response.then(e => {
+      if (e) {
+        let activities = e.data.time_entry_activities;
+
+        let result = {};
+        activities.forEach(elem => result[elem.id] = elem.name);
+
+        this.props.dispatchActivities(result);     
+      }
+    });
   }
 
-  //TODO спинер не показывается
   setLoaded = () => {
     this.setState({
       isLoading: false
@@ -78,6 +95,7 @@ class Tasks extends React.Component {
             due_date={elem.due_date}
             estimated_hours={elem.estimated_hours}
             spent_hours={elem.spent_hours}
+            activities={this.props.activities}
           />
         </li>
       )
@@ -88,9 +106,9 @@ class Tasks extends React.Component {
         component={"li"}
         my={3}
       >
-        <Skeleton height={40}/>
-        <Skeleton height={40}/>
-        <Skeleton height={40}/>
+        <Skeleton height={40} />
+        <Skeleton height={40} />
+        <Skeleton height={40} />
       </Box>
     );
 

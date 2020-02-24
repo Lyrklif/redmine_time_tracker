@@ -1,17 +1,17 @@
 import React from "react";
 
 import getAuthorization from "../redmine/getAuthorization";
-import {connect} from "react-redux";
-
-import * as IconsLib from "@material-ui/icons";
+import { connect } from "react-redux";
 
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-
+import Switch from "@material-ui/core/Switch";
 import Box from "@material-ui/core/Box";
-import {userInfo} from "../actionCreators/userInfo";
-import {storeAuthorization} from "../actionCreators/storeAuthorization";
+import { userInfo } from "../actionCreators/userInfo";
+import { storeAuthorization } from "../actionCreators/storeAuthorization";
+import { Typography } from "@material-ui/core";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+
+import Input from "../components/Input";
 
 
 const mapStateToProps = state => {
@@ -22,9 +22,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatchAuthorization: (value) => dispatch(storeAuthorization(value)),
-    dispatchUserInfo: (login, key, url) => dispatch(userInfo(login, key, url)),
-  }
+    dispatchAuthorization: value => dispatch(storeAuthorization(value)),
+    dispatchUserInfo: (login, key, url) => dispatch(userInfo(login, key, url))
+  };
 };
 
 class Login extends React.Component {
@@ -32,33 +32,52 @@ class Login extends React.Component {
     super(props);
 
     this.state = {
+      logInByApi: false,
       url: "",
       api: "",
+      login: "",
+      password: ""
     };
   }
 
-  setAuthorization = (response) => {
+  switchLogInByApi = () => {
+    this.setState({ logInByApi: !this.state.logInByApi });
+
+    this.setState({
+      api: '',
+      login: '',
+      password: ''
+    });
+  };
+
+  setAuthorization = response => {
     response.then(e => {
       if (e) {
-        localStorage.setItem('url', this.state.url);
-        localStorage.setItem('api', this.state.api);
-
         let login = e.data.user.login;
+        let apiKey = e.data.user.api_key;
 
-        //TODO зписывать в случаевторизации через логин/пароль
-        // let apiKey = e.data.user.api_key;
+        localStorage.setItem("url", this.state.url);
+        localStorage.setItem("api", apiKey);
+        localStorage.setItem("login", login);
 
         this.props.dispatchAuthorization(true);
-        this.props.dispatchUserInfo(login, this.state.api, this.state.url);
+        //TODO зачем записывать api и url?
+        this.props.dispatchUserInfo(login, apiKey, this.state.url);
       } else {
         //TODO добавить обработку неверных данных
-        alert('Неверные данные');
+        alert("Неверные данные");
       }
     });
   };
 
   updComponent = () => {
-    let value = getAuthorization(this.state.url, this.state.api);
+    let value;
+    if (this.state.logInByApi) {
+      value = getAuthorization('api', this.state.url, this.state.api);
+    } else {
+      value = getAuthorization('login', this.state.url, this.state.login, this.state.password);
+    }
+
     this.setAuthorization(value);
   };
 
@@ -67,25 +86,54 @@ class Login extends React.Component {
     this.updComponent(this.state.url, this.state.api);
   };
 
-
   setUrl = e => {
-    e.preventDefault();
     let url = e.target.value.trim(); // значение без пробелов
-
     if (url.endsWith("/")) {
       url = url.substring(0, url.length - 1); // удалить последний символ
     }
-    this.setState({url: url});
+    this.setState({ url: url });
   };
 
   setApi = e => {
-    e.preventDefault();
-    this.setState({
-      api: e.target.value.trim()
-    });
+    this.setState({ api: e.target.value.trim() });
+  };
+
+  setLogin = e => {
+    this.setState({ login: e.target.value.trim() });
+  };
+
+  setPass = e => {
+    this.setState({ password: e.target.value.trim() });
   };
 
   render() {
+    const loginPass = (
+      <>
+        <Input
+          label="Логин"
+          placeholder="Логин"
+          onInput={this.setLogin}
+          icon={"LockOpen"}
+        />
+
+        <Input
+          label="Пароль"
+          placeholder="****"
+          onInput={this.setPass}
+          icon={"VpnKey"}
+        />
+      </>
+    );
+
+    const api = (
+      <Input
+        label="Redmine Api"
+        placeholder="api_key"
+        onInput={this.setApi}
+        icon={"VpnKey"}
+      />
+    );
+
     return (
       <Box
         component={"form"}
@@ -95,39 +143,33 @@ class Login extends React.Component {
         display="flex"
         flexDirection="column"
       >
-        <TextField
+        <Box className="login-form__switch">
+        <FormControlLabel
+          title="Вход по api"
+          label={
+            <Typography
+              color={this.state.logInByApi ? "secondary" : "textPrimary"}
+            >Вход по api</Typography>
+          }
+          control={
+            <Switch
+              checked={this.state.logInByApi}
+              onChange={this.switchLogInByApi}
+              value="logInByApi"
+              color="secondary"
+            />
+          }
+        />
+        </Box>
+
+        <Input
           label="Redmine Url"
-          title={"Redmine Url"}
-          size="large"
-          color="secondary"
           placeholder="http://redmine.url.ru"
-          variant="outlined"
           onInput={this.setUrl}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconsLib.Https/>
-              </InputAdornment>
-            )
-          }}
+          icon={"Language"}
         />
 
-        <TextField
-          label="Redmine Api"
-          title={"Redmine Api"}
-          size="large"
-          color="secondary"
-          placeholder="api_key"
-          variant="outlined"
-          onInput={this.setApi}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconsLib.VpnKey/>
-              </InputAdornment>
-            )
-          }}
-        />
+        {this.state.logInByApi ? api : loginPass}
 
         <Button
           color="secondary"
@@ -135,7 +177,7 @@ class Login extends React.Component {
           variant="outlined"
           title="Войти"
           type={"submit"}
-          disabled={!this.state.url || !this.state.api}
+          disabled={!this.state.url || (this.state.logInByApi ? !this.state.api : !this.state.login || !this.state.password)}
         >
           Войти
         </Button>
