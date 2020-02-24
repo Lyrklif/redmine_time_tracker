@@ -72,15 +72,27 @@ code {
   align-self: center;
 }
 
+.login-form__switch {
+  align-self: flex-end;
+}
+
+.login-form__switch > label {
+  margin-right: 0;
+}
 
 .page-header {
   width: 100vw;
   z-index: 999;
 }
 
+.textarea {
+  width: 100%;
+  display: block;
+}
 
-button:active {
+
+/* button:active {
   -webkit-box-shadow: 0px 0px 0px 6px rgba(181, 181, 192, 0.2) !important;
   -moz-box-shadow: 0px 0px 0px 6px rgba(181, 181, 192, 0.2) !important;
   box-shadow: 0px 0px 0px 6px rgba(181, 181, 192, 0.2) !important;
-}
+} */

@@ -4,12 +4,13 @@
 // import { startingValue } from '../startingValue';
 
 import {
-  UPD_MAIN_STORE,
   UPD_TASKS,
   UPD_AUTHORIZED,
   UPD_USER_DATA,
   UPD_APPLICATION_STATUS,
   UPD_STATISTICS,
+  UPD_LOGIN,
+  UPD_ACTIVITIES,
 } from '../variables/actionTypes';
 
 export default (state, action) => {
@@ -29,7 +30,16 @@ export default (state, action) => {
     case UPD_TASKS:
       return Object.assign({}, state, {
         ...state,
-        'tasks': action.value
+        'tasks': action.value        
+      });
+    // изменить UPD_LOGIN
+    case UPD_LOGIN:
+      return Object.assign({}, state, {
+        ...state,
+        'user': {
+          ...state.user,
+          userLogin: action.login,
+        },
       });
     // изменить UPD_STATISTICS
     case UPD_STATISTICS:
@@ -44,6 +54,11 @@ export default (state, action) => {
     case UPD_AUTHORIZED:
       return Object.assign({}, state, {
         'authorized': action.authorized !== undefined ? action.authorized : !state.authorized,
+      });
+    // авторизован ли пользователь
+    case UPD_ACTIVITIES:
+      return Object.assign({}, state, {
+        'activities': action.value,
       });
     // авторизован ли пользователь
     case UPD_USER_DATA:
