@@ -119,6 +119,7 @@ class Login extends React.Component {
         <Input
           label="Пароль"
           placeholder="****"
+          type={'password'}
           onInput={this.setPass}
           icon={"VpnKey"}
         />

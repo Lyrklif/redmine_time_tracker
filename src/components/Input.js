@@ -21,6 +21,7 @@ class Input extends React.Component {
       <TextField
       label={this.props.label}
       title={this.props.label}
+      type={this.props.type ? this.props.type : 'text'}
       color="secondary"
       placeholder={this.props.placeholder}
       variant="outlined"
