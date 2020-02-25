@@ -54,6 +54,10 @@ const useStyles = theme => ({
   root: {
     background: MyTheme.palette.primary.light,
   },
+  activity: {
+    width: '100%'
+  },
+
 });
 
 
@@ -110,6 +114,8 @@ class Task extends React.Component {
 
 
   render() {
+    const {classes} = this.props;
+
     let activityKeys = Object.keys(this.props.activities);
     let activityValues = Object.values(this.props.activities);
 
@@ -119,15 +125,14 @@ class Task extends React.Component {
       );
     });
 
-    const {classes} = this.props;
-
-
     return (
       <ExpansionPanel className={classes.root}>
 
         <ExpansionPanelSummary expandIcon={<IconsLib.ExpandMore/>}>
-          <Grid container>
-            <Grid item xs={12} sm={9}>
+
+          <Grid container spacing={2}>
+
+            <Grid item xs={12} sm={8} md={9}>
               <Typography color="textSecondary" variant="caption">
                 {this.props.id} {this.props.project}
               </Typography>
@@ -144,15 +149,16 @@ class Task extends React.Component {
               container
               item
               xs={12}
-              sm={3}
+              sm={4}
+              md={3}
+              className={'timer-wp'}
               alignItems="center"
-              justify="flex-end"
-            >
+              justify="space-between">
+
               <Timer
                 startImmediately={false}
                 formatValue={(value) => `${(value < 10 ? `0${value}` : value)}`}
-                onStart={() => this.startTimer()}
-              >
+                onStart={() => this.startTimer()}>
                 {({start, resume, pause, stop, reset, getTimerState, getTime}) => (
                   <>
                     <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
@@ -189,59 +195,71 @@ class Task extends React.Component {
                 )}
               </Timer>
 
-              <Box m={1}/>
-
             </Grid>
           </Grid>
         </ExpansionPanelSummary>
 
         <ExpansionPanelDetails>
-          <Box m={1}>
-            План:
-            {this.props.estimated_hours ? this.props.estimated_hours : 0}
-            =>
-            затрекано:
-            {this.props.spent_hours ? this.props.spent_hours.toFixed(2) : 0}
-          </Box>
 
-          <FormControl>
-            <Select
-              value={this.state.activity}
-              onChange={this.changeActivity}
-            >
-              {activities}
-            </Select>
-          </FormControl>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={8}>
+              <TextField
+                variant="outlined"
+                multiline
+                className={'textarea'}
+                value={this.state.comment}
+                onChange={this.changeComment}
+              />
+            </Grid>
 
-          <Box my={1}>
-            <TextField
-              variant="outlined"
-              multiline
-              className={"textarea"}
-              value={this.state.comment}
-              onChange={this.changeComment}
-            />
-          </Box>
+            <Grid item xs={12} md={4}>
+              <Box mb={1}>
+                <FormControl className={classes.activity}>
+                  <Select
+                    value={this.state.activity}
+                    onChange={this.changeActivity}
+                  >
+                    {activities}
+                  </Select>
+                </FormControl>
+              </Box>
+
+               {this.props.priority &&
+                <Chip
+                  variant="outlined"
+                  size="small"
+                  label={`${this.props.priority}`}
+                />
+              }
+
+              {this.props.estimated_hours &&
+                <Chip
+                  variant="outlined"
+                  size="small"
+                  label={`План: ${this.props.estimated_hours}ч`}
+                />
+              }
+
+              {this.props.spent_hours &&
+                <Chip
+                  variant="outlined"
+                  size="small"
+                  label={`Учтено: ${this.props.spent_hours.toFixed(2)}ч`}
+                />
+              }
+
+              {this.props.start_date && this.props.due_date &&
+                <Chip
+                  variant="outlined"
+                  size="small"
+                  label={`c ${this.props.start_date} до ${this.props.due_date}`}
+                />
+              }
+
+            </Grid>
+          </Grid>
 
 
-          <Box m={1}>
-            <Divider/>
-          </Box>
-
-          {this.props.priority && (
-            <Chip
-              variant="outlined"
-              size="small"
-              label={`${this.props.priority}`}
-            />
-          )}
-          {this.props.start_date && this.props.due_date && (
-            <Chip
-              variant="outlined"
-              size="small"
-              label={`c ${this.props.start_date} до ${this.props.due_date}`}
-            />
-          )}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );

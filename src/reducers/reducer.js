@@ -41,8 +41,8 @@ export default (state, action) => {
           ...state.application,
           'notice': {
             show: action.notice.show !== undefined ? action.notice.show : false,
-            type: action.notice.type !== undefined ? action.notice.type : 'info',
-            text: action.notice.text !== undefined ? action.notice.text : ''
+            type: action.notice.type !== undefined ? action.notice.type : state.application.notice.type,
+            text: action.notice.text !== undefined ? action.notice.text : state.application.notice.text
           }
         }
       });
