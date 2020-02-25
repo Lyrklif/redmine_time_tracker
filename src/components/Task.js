@@ -209,7 +209,7 @@ class Task extends React.Component {
         <ExpansionPanelDetails>
 
           <Grid container spacing={2}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} sm={6} md={8}>
               <TextField
                 variant="outlined"
                 multiline
@@ -221,7 +221,7 @@ class Task extends React.Component {
               />
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <Box mb={1}>
                 <FormControl className={classes.activity}>
                   <Select value={this.state.activity} onChange={this.changeActivity}>

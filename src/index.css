@@ -46,9 +46,10 @@ body {
   max-width: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.header__login {
+  text-align: right;
+  margin-right: 1em !important;
+  margin-left: auto !important;
 }
 
 

@@ -99,7 +99,7 @@ class PageHeader extends React.Component {
               </Link>
             </Hidden>
 
-            <Typography variant="body2" color="inherit">
+            <Typography variant="body2" color="inherit" className={'header__login'}>
               {this.props.name}
             </Typography>
           </Toolbar>
