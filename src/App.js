@@ -15,15 +15,15 @@ import Box from '@material-ui/core/Box';
 import getAuthorization from './redmine/getAuthorization';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import MyTheme from './MyTheme';
 import { storeAuthorization } from "./actionCreators/storeAuthorization";
 import { storeLogin } from "./actionCreators/storeLogin";
-
+import { modal } from './actionCreators/modal';
 
 import Preloader from '../src/components/Preloader';
 import Notice from '../src/components/Notice';
+import Modal from '../src/components/Modal';
 
 
 const mapStateToProps = (state) => {
@@ -38,6 +38,7 @@ const mapDispatchToProps = dispatch => {
   return {
     dispatchAuthorization: (value) => dispatch(storeAuthorization(value)),
     dispatchLogin: (value) => dispatch(storeLogin(value)),
+    dispatchModal: (show, title, text) => dispatch(modal(show, title, text)),
   }
 };
 
@@ -53,12 +54,12 @@ class App extends React.Component {
   componentDidMount() {
     const url = localStorage.getItem('url');
     const api = localStorage.getItem('api');
-    
+
     if (url && api) {
       let value = getAuthorization("api", url, api);
       this.setAuthorization(value);
     } else {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     }
 
     window.addEventListener("beforeunload", this.handleWindowBeforeUnload);
@@ -66,12 +67,18 @@ class App extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.handleWindowBeforeUnload);
-  }
+  };
 
+  // закрытие/перезагрузка при несохранённых данных
   handleWindowBeforeUnload = (e) => {
     if (this.props.notSavedData) {
       e.preventDefault();
       e.returnValue = true;
+
+      let title = 'Данные не сохранены';
+      let text = 'Нужно остановить таймер, чтобы отправить данные в Redmine.';
+      
+      this.props.dispatchModal(true, title, text);
     }
   };
 
@@ -83,7 +90,7 @@ class App extends React.Component {
         const login = localStorage.getItem('login');
         this.props.dispatchLogin(login);
 
-        this.setState({isLoading: false});
+        this.setState({ isLoading: false });
       } else {
         alert('Ошибка при авторизации');
       }
@@ -97,7 +104,7 @@ class App extends React.Component {
       <MuiThemeProvider theme={MyTheme}>
         <Box className="App" bgcolor="primary.main">
 
-          {this.state.isLoading && <Preloader />}          
+          {this.state.isLoading && <Preloader />}
 
           {authorized && <PageHeader />}
 
@@ -127,7 +134,10 @@ class App extends React.Component {
 
           </Box>
         </Box>
+
+
         <Notice />
+        <Modal />
       </MuiThemeProvider>
     );
   }

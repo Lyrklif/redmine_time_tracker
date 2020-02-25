@@ -11,6 +11,7 @@ import {
   UPD_LOGIN,
   UPD_ACTIVITIES,
   UPD_NOTICE,
+  UPD_MODAL,
   UPD_NOT_SAVED_DATA,
 } from '../variables/actionTypes';
 
@@ -43,6 +44,19 @@ export default (state, action) => {
             show: action.notice.show !== undefined ? action.notice.show : false,
             type: action.notice.type !== undefined ? action.notice.type : state.application.notice.type,
             text: action.notice.text !== undefined ? action.notice.text : state.application.notice.text
+          }
+        }
+      });
+    // изменить UPD_MODAL
+    case UPD_MODAL:
+      return Object.assign({}, state, {
+        ...state,
+        'application': {
+          ...state.application,
+          'modal': {
+            show: action.modal.show !== undefined ? action.modal.show : false,
+            title: action.modal.title !== undefined ? action.modal.title : state.application.modal.title,
+            text: action.modal.text !== undefined ? action.modal.text : state.application.modal.text
           }
         }
       });
