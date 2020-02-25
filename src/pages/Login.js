@@ -64,7 +64,6 @@ class Login extends React.Component {
         //TODO зачем записывать api и url?
         this.props.dispatchUserInfo(login, apiKey, this.state.url);
       } else {
-        //TODO добавить обработку неверных данных
         alert("Неверные данные");
       }
     });
@@ -119,6 +118,7 @@ class Login extends React.Component {
         <Input
           label="Пароль"
           placeholder="****"
+          type={'password'}
           onInput={this.setPass}
           icon={"VpnKey"}
         />

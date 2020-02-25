@@ -14,14 +14,11 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 
 import {withStyles} from "@material-ui/core/styles";
-import {ThemeProvider, makeStyles} from '@material-ui/core/styles';
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+
 
 import Timer from 'react-compound-timer';
 
@@ -29,6 +26,7 @@ import timeEntries from '../redmine/timeEntries';
 
 import Notice from '../components/Notice';
 import {notice} from "../actionCreators/notice";
+import {notSavedData} from "../actionCreators/notSavedData";
 
 import {connect} from "react-redux";
 
@@ -38,12 +36,14 @@ const mapStateToProps = state => {
     show: state.application.notice.show,
     type: state.application.notice.type,
     text: state.application.notice.text,
+    notSavedData: state.application.notSavedData
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     dispatchNotice: (show, type, text) => dispatch(notice(show, type, text)),
+    dispatchNotSavedData: value => dispatch(notSavedData(value)),
   };
 };
 
@@ -85,11 +85,12 @@ class Task extends React.Component {
   };
 
   switchPlay = (value) => {
-    this.setState({play: value ? value : !this.state.play})
+    this.setState({play: value ? value : !this.state.play});
   };
 
   startTimer = () => {
     this.switchPlay(true);
+    this.props.dispatchNotSavedData(true);
   };
 
   stopTimer = (milliseconds) => {
@@ -100,6 +101,8 @@ class Task extends React.Component {
     //TODO вкл/выкл отправку времени
     let entries = timeEntries(this.props.id, hours, this.state.activity, this.state.comment);
     this.feedback(entries);
+
+    this.props.dispatchNotSavedData(false);
   };
 
   feedback = (response) => {
@@ -207,53 +210,36 @@ class Task extends React.Component {
                 variant="outlined"
                 multiline
                 className={'textarea'}
+                fullWidth
                 value={this.state.comment}
                 onChange={this.changeComment}
+                inputProps={{maxLength: 255}}
               />
             </Grid>
 
             <Grid item xs={12} md={4}>
               <Box mb={1}>
                 <FormControl className={classes.activity}>
-                  <Select
-                    value={this.state.activity}
-                    onChange={this.changeActivity}
-                  >
+                  <Select value={this.state.activity} onChange={this.changeActivity}>
                     {activities}
                   </Select>
                 </FormControl>
               </Box>
 
-               {this.props.priority &&
-                <Chip
-                  variant="outlined"
-                  size="small"
-                  label={`${this.props.priority}`}
-                />
+              {this.props.priority &&
+              <Chip variant="outlined" size="small" label={`${this.props.priority}`}/>
               }
 
               {this.props.estimated_hours &&
-                <Chip
-                  variant="outlined"
-                  size="small"
-                  label={`План: ${this.props.estimated_hours}ч`}
-                />
+              <Chip variant="outlined" size="small" label={`План: ${this.props.estimated_hours}ч`}/>
               }
 
               {this.props.spent_hours > 0 &&
-                <Chip
-                  variant="outlined"
-                  size="small"
-                  label={`Учтено: ${this.props.spent_hours.toFixed(2)}ч`}
-                />
+              <Chip variant="outlined" size="small" label={`Учтено: ${this.props.spent_hours.toFixed(2)}ч`}/>
               }
 
               {this.props.start_date && this.props.due_date &&
-                <Chip
-                  variant="outlined"
-                  size="small"
-                  label={`c ${this.props.start_date} до ${this.props.due_date}`}
-                />
+              <Chip variant="outlined" size="small" label={`c ${this.props.start_date} до ${this.props.due_date}`}/>
               }
 
             </Grid>

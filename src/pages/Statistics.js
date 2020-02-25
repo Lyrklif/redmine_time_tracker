@@ -5,7 +5,7 @@ import * as IconsLib from "@material-ui/icons";
 
 import PieChart from '../components/PieChart';
 
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 import getStatistics from "../redmine/getStatistics";
 import {
@@ -14,7 +14,7 @@ import {
   periodMonth
 } from "../functions/commandGetStatistics";
 import Grid from "@material-ui/core/Grid";
-import { statistics } from "../actionCreators/statistics";
+import {statistics} from "../actionCreators/statistics";
 
 
 const mapStateToProps = state => {
@@ -38,14 +38,27 @@ class Statistics extends React.Component {
     this.state = {
       isLoadingDay: true,
       isLoadingWeek: true,
-      isLoadingMonth: true
+      isLoadingMonth: true,
     };
   }
 
   componentDidMount() {
+    this.props.dispatchStatistics("month", 0); // обнулить статистику за месяц
+
     this.showCurrentComponent(periodToday, "day", 'isLoadingDay');
     this.showCurrentComponent(periodWeek, "week", 'isLoadingWeek');
-    this.showCurrentComponent(periodMonth, "month", 'isLoadingMonth');
+    // this.showCurrentComponent(periodMonth, "month", 'isLoadingMonth');
+
+    //TODO поискать другой способ вывода статистики за месяц
+    // из-за лимита в 100 результатов приходится отправлять несколько запросов,
+    // а потом соединять результат
+    periodMonth.forEach((elem, index) => {
+      if (index === periodMonth.length - 1) {
+        this.showCurrentComponent(elem, "month", 'isLoadingMonth');
+      } else {
+        this.showCurrentComponent(elem, "month");
+      }
+    })
   };
 
   showCurrentComponent = (period, name, isLoadingName) => {
@@ -61,9 +74,13 @@ class Statistics extends React.Component {
         data.forEach(elem => hours += elem.hours);
         hours = +hours.toFixed(2);
 
-        this.props.dispatchStatistics(name, hours);
+        if (name === 'month') {
+          this.props.dispatchStatistics(name, +(hours + this.props.month).toFixed(2));
+        } else {
+          this.props.dispatchStatistics(name, hours);
+        }
 
-        this.setLoaded(isLoadingName);
+        if (isLoadingName) this.setLoaded(isLoadingName);
       } else {
         alert('Ошибка в setStatistics. Попробуйте перезагрузить страницу');
       }
@@ -82,7 +99,7 @@ class Statistics extends React.Component {
     let monthPercent = (this.props.month * 100 / 160).toFixed(2);
 
     return (
-      <Grid container justify="center" alignItems="flex-start">
+      <Grid container justify="center" alignItems="center">
         <Grid item xs={12} sm={6} md={4}>
           <PieChart
             percent={dayPercent}

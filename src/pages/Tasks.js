@@ -37,7 +37,7 @@ class Tasks extends React.Component {
 
   componentDidMount() {
     this.showCurrentComponent();
-  };
+    };
 
   showCurrentComponent = () => {
     let value = getTasks();

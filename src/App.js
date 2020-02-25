@@ -29,6 +29,7 @@ import Notice from '../src/components/Notice';
 const mapStateToProps = (state) => {
   return {
     authorized: state.authorized,
+    notSavedData: state.application.notSavedData,
   }
 };
 
@@ -59,8 +60,20 @@ class App extends React.Component {
     } else {
       this.setState({isLoading: false});
     }
+
+    window.addEventListener("beforeunload", this.handleWindowBeforeUnload);
   };
 
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.handleWindowBeforeUnload);
+  }
+
+  handleWindowBeforeUnload = (e) => {
+    if (this.props.notSavedData) {
+      e.preventDefault();
+      e.returnValue = true;
+    }
+  };
 
   setAuthorization = (response) => {
     response.then(e => {
