@@ -109,24 +109,25 @@ class App extends React.Component {
           {authorized && <PageHeader />}
 
           <Box component={'main'} className={'main-content'}>
-            {authorized ?
 
+            {/* TODO выбрать между этими блоками */}
+            {/* {authorized ?
               <Switch>
-                <Route exact path='/' render={
-                  () => (authorized ? (<Tasks />) : (<Redirect to="/login" />)
-                  )} />
+                <Route exact path='/' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
+                <Route exact path='/tasks' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
+                <Route exact path='/statistics' render={() => (authorized ? (<Statistics />) : (<Redirect to="/login" />))} />
+                <Route exact path='/login' render={() => (authorized ? (<Redirect to="/" />) : (<Login />))} />
+              </Switch>
+              :
+              <Login />
+            } */}
 
-                <Route exact path='/tasks' render={() => (
-                  authorized ? (<Tasks />) : (<Redirect to="/login" />)
-                )} />
-
-                <Route exact path='/statistics' render={() => (
-                  authorized ? (<Statistics />) : (<Redirect to="/login" />)
-                )} />
-
-                <Route exact path='/login' render={() => (
-                  authorized ? (<Redirect to="/" />) : (<Login />)
-                )} />
+            {authorized ?
+              <Switch>
+                <Route exact path="/"><Tasks /></Route>
+                <Route exact path="/tasks"><Tasks /></Route>
+                <Route exact path="/statistics"><Statistics /></Route>
+                <Route exact path="/login"><Login /></Route>
               </Switch>
               :
               <Login />
