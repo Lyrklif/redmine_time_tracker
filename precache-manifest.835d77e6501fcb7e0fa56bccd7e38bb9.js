@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "02d6c2d0ecc1fd54b6efb2b4c247e0a3",
+    "revision": "27254252b339ac5e0774f2e0f9f8a7cb",
     "url": "/redmine_time_tracker/index.html"
   },
   {
