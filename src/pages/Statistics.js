@@ -82,7 +82,7 @@ class Statistics extends React.Component {
     let monthPercent = (this.props.month * 100 / 160).toFixed(2);
 
     return (
-      <Grid container justify="center" alignItems="flex-start">
+      <Grid container justify="center" alignItems="center">
         <Grid item xs={12} sm={6} md={4}>
           <PieChart
             percent={dayPercent}

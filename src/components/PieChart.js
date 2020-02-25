@@ -24,7 +24,7 @@ class PieChart extends React.Component {
 
   render() {
     return (
-      <Box style={{width: 190, textAlign: 'center'}}>
+      <Box className={'pie-chart'}>
         <CircularProgressbarWithChildren
           value={this.props.percent}
           styles={buildStyles({

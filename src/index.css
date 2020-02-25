@@ -121,8 +121,11 @@ code {
 }
 
 
-.extends-panel__btn {
-  z-index: 800;
+.pie-chart {
+  width: 190px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
