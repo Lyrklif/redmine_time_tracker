@@ -6,10 +6,10 @@
   "display": "standalone",
   "start_url": "https://lyrklif.github.io/redmine_time_tracker/",
   "short_name": "Redmine Time Tracker",
-  "theme_color": "#400080",
+  "theme_color": "#3D454C",
   "description": "Приложение для учёта времени в Redmine. Можно установить на телефон и компьютер.",
   "orientation": "any",
-  "background_color": "transparent",
+  "background_color": "#3D454C",
   "related_applications": [],
   "prefer_related_applications": false,
   "icons": [
