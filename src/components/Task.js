@@ -240,7 +240,7 @@ class Task extends React.Component {
                 />
               }
 
-              {this.props.spent_hours &&
+              {this.props.spent_hours > 0 &&
                 <Chip
                   variant="outlined"
                   size="small"
