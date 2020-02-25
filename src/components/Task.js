@@ -95,8 +95,8 @@ class Task extends React.Component {
     this.switchPlay(false);
 
     //TODO вкл/выкл отправку времени
-    // let entries = timeEntries(this.props.id, hours, this.state.activity, this.state.comment);
-    // this.feedback(entries);
+    let entries = timeEntries(this.props.id, hours, this.state.activity, this.state.comment);
+    this.feedback(entries);
   };
 
   feedback = (response) => {
