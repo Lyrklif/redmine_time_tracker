@@ -26,6 +26,8 @@ export const startingValue = {
 
   application: {
     notSavedData: false,
+
+    showMobileMenu: false,
     
     modal: {
       show: false,

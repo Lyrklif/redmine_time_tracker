@@ -9,11 +9,11 @@ import { connect } from 'react-redux';
 import Login from './pages/Login';
 import Tasks from './pages/Tasks';
 import Statistics from './pages/Statistics';
-
+import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-
+import Drawer from '@material-ui/core/Drawer';
 import getAuthorization from './redmine/getAuthorization';
-import { Redirect, Route, Switch, Prompt } from 'react-router-dom';
+import { Redirect, Route, Switch, Prompt, Link } from 'react-router-dom';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import MyTheme from './MyTheme';
@@ -21,10 +21,18 @@ import { storeAuthorization } from "./actionCreators/storeAuthorization";
 import { storeLogin } from "./actionCreators/storeLogin";
 import { modal } from './actionCreators/modal';
 
-import Preloader from '../src/components/Preloader';
-import Notice from '../src/components/Notice';
-import Modal from '../src/components/Modal';
+import Preloader from './components/Preloader';
+import Notice from './components/Notice';
+import Modal from './components/Modal';
+import MobileMenu from './components/MobileMenu';
 
+
+
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const mapStateToProps = (state) => {
   return {
@@ -48,7 +56,7 @@ class App extends React.Component {
 
     this.state = {
       isLoading: true,
-      isBlocking: false,
+      showDrawer: false,
     };
   }
 
@@ -97,6 +105,14 @@ class App extends React.Component {
     });
   };
 
+  toggleDrawer = (side, open) => e => {
+    if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) {
+      return;
+    }
+
+    this.setState({ showDrawer: open });
+  }
+
   render() {
     let authorized = this.props.authorized;
 
@@ -139,11 +155,14 @@ class App extends React.Component {
 
         <Notice />
         <Modal />
+        <MobileMenu />
         <Prompt
           when={this.props.notSavedData}
           message={`Данные не сохранены. Нужно остановить таймер, чтобы отправить данные в Redmine.`}
         />
-      </MuiThemeProvider>
+
+
+      </MuiThemeProvider >
     );
   }
 }

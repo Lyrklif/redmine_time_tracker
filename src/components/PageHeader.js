@@ -1,26 +1,23 @@
 // pageHeader
 
 import React from "react";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as IconsLib from "@material-ui/icons";
 // let Icon = IconsLib[elem[1]];
 // <Icon />
 
-import AppBar from '@material-ui/core/AppBar';
+import Hidden from '@material-ui/core/Hidden';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
 
-
-import Divider from "@material-ui/core/Divider";
 import Box from '@material-ui/core/Box';
-import Tabs from '@material-ui/core/Tabs';
-import Paper from '@material-ui/core/Paper';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import MyTheme from '../MyTheme';
+import { mobileMenu } from "../actionCreators/mobileMenu";
 
 import {
   BrowserRouter as Router,
@@ -37,8 +34,14 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchMobileMenu: (value) => dispatch(mobileMenu(value)),
+  }
+};
+
 function ElevationScroll(props) {
-  const {children, window} = props;
+  const { children, window } = props;
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
@@ -56,6 +59,10 @@ class PageHeader extends React.Component {
     super(props);
   }
 
+  showMobileMenu = () => {
+    this.props.dispatchMobileMenu(true);
+  }
+
   render() {
     return (
       <ElevationScroll>
@@ -67,22 +74,30 @@ class PageHeader extends React.Component {
           color="text.primary"
         >
           <Toolbar >
-            <IconButton edge="start" aria-label="menu" color="inherit">
-              <MenuIcon/>
-            </IconButton>
 
+            <Hidden mdUp>
+              <IconButton
+                onClick={this.showMobileMenu}
+                edge="start"
+                aria-label="menu"
+                color="inherit">
+                <MenuIcon />
+              </IconButton>
+            </Hidden>
 
-            <Link to="/tasks" className={"clear-link-style"}>
-              <Button color="inherit">
-                Задачи
+            <Hidden smDown>
+              <Link to="/tasks" className={"clear-link-style"}>
+                <Button color="inherit">
+                  Задачи
               </Button>
-            </Link>
+              </Link>
 
-            <Link to="/statistics" className={"clear-link-style"}>
-              <Button color="inherit">
-                Статистика
+              <Link to="/statistics" className={"clear-link-style"}>
+                <Button color="inherit">
+                  Статистика
               </Button>
-            </Link>
+              </Link>
+            </Hidden>
 
             <Typography variant="body2" color="inherit">
               {this.props.name}
@@ -95,4 +110,4 @@ class PageHeader extends React.Component {
 }
 
 
-export default connect(mapStateToProps)(PageHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(PageHeader);
