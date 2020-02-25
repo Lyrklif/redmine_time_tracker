@@ -37,23 +37,7 @@ class Tasks extends React.Component {
 
   componentDidMount() {
     this.showCurrentComponent();
-    //
-    // window.addEventListener("beforeunload", this.handleWindowBeforeUnload);
     };
-
-  // componentWillUnmount() {
-  //   window.removeEventListener("beforeunload", this.handleWindowBeforeUnload);
-  // }
-  //
-  // handleWindowBeforeUnload = (e) => {
-  //   e.preventDefault();
-  //   console.log('beforeunload');
-  //
-  //   if (this.props.notSavedData) {
-  //     e.preventDefault();
-  //     e.returnValue = true;
-  //   }
-  // };
 
   showCurrentComponent = () => {
     let value = getTasks();
