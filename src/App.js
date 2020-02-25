@@ -13,7 +13,7 @@ import Statistics from './pages/Statistics';
 import Box from '@material-ui/core/Box';
 
 import getAuthorization from './redmine/getAuthorization';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, Prompt } from 'react-router-dom';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import MyTheme from './MyTheme';
@@ -47,7 +47,8 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: true
+      isLoading: true,
+      isBlocking: false,
     };
   }
 
@@ -75,10 +76,9 @@ class App extends React.Component {
       e.preventDefault();
       e.returnValue = true;
 
-      let title = 'Данные не сохранены';
-      let text = 'Нужно остановить таймер, чтобы отправить данные в Redmine.';
-      
-      this.props.dispatchModal(true, title, text);
+      // let title = 'Данные не сохранены';
+      // let text = 'Нужно остановить таймер, чтобы отправить данные в Redmine.';
+      // this.props.dispatchModal(true, title, text);
     }
   };
 
@@ -112,9 +112,9 @@ class App extends React.Component {
             {authorized ?
 
               <Switch>
-                <Route exact path='/' render={() => (
-                  authorized ? (<Tasks />) : (<Redirect to="/login" />)
-                )} />
+                <Route exact path='/' render={
+                  () => (authorized ? (<Tasks />) : (<Redirect to="/login" />)
+                  )} />
 
                 <Route exact path='/tasks' render={() => (
                   authorized ? (<Tasks />) : (<Redirect to="/login" />)
@@ -138,6 +138,10 @@ class App extends React.Component {
 
         <Notice />
         <Modal />
+        <Prompt
+          when={this.props.notSavedData}
+          message={`Данные не сохранены. Нужно остановить таймер, чтобы отправить данные в Redmine.`}
+        />
       </MuiThemeProvider>
     );
   }

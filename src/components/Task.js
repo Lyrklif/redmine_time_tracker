@@ -57,7 +57,6 @@ const useStyles = theme => ({
   activity: {
     width: '100%'
   },
-
 });
 
 
@@ -114,6 +113,10 @@ class Task extends React.Component {
       }
     });
   };
+
+  componentWillUnmount() {
+    this.props.dispatchNotSavedData(false);
+  }
 
 
   render() {
