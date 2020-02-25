@@ -11,6 +11,7 @@ import {
   UPD_STATISTICS,
   UPD_LOGIN,
   UPD_ACTIVITIES,
+  UPD_NOTICE,
 } from '../variables/actionTypes';
 
 export default (state, action) => {
@@ -30,7 +31,20 @@ export default (state, action) => {
     case UPD_TASKS:
       return Object.assign({}, state, {
         ...state,
-        'tasks': action.value        
+        'tasks': action.value
+      });
+    // изменить UPD_NOTICE
+    case UPD_NOTICE:
+      return Object.assign({}, state, {
+        ...state,
+        'application': {
+          ...state.application,
+          'notice': {
+            show: action.notice.show !== undefined ? action.notice.show : false,
+            type: action.notice.type !== undefined ? action.notice.type : 'info',
+            text: action.notice.text !== undefined ? action.notice.text : ''
+          }
+        }
       });
     // изменить UPD_LOGIN
     case UPD_LOGIN:

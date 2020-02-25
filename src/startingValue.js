@@ -14,14 +14,10 @@ export const startingValue = {
   },
 
   // задачи
-  tasks: {
-
-  },
+  tasks: {},
 
   // типы активности
-  activities: {
-
-  },
+  activities: {},
 
   // статистика
   statistics: {
@@ -31,6 +27,10 @@ export const startingValue = {
   },
 
   application: {
-
+    notice: {
+      show: false,
+      type: '',
+      text: ''
+    }
   },
-}
+};

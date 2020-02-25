@@ -23,6 +23,7 @@ import { storeLogin } from "./actionCreators/storeLogin";
 
 
 import Preloader from '../src/components/Preloader';
+import Notice from '../src/components/Notice';
 
 
 const mapStateToProps = (state) => {
@@ -113,6 +114,7 @@ class App extends React.Component {
 
           </Box>
         </Box>
+        <Notice />
       </MuiThemeProvider>
     );
   }
