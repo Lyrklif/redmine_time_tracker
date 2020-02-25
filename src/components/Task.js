@@ -13,6 +13,15 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 
+import {withStyles} from "@material-ui/core/styles";
+import {ThemeProvider, makeStyles} from '@material-ui/core/styles';
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
 import Timer from 'react-compound-timer';
 
@@ -22,6 +31,7 @@ import Notice from '../components/Notice';
 import {notice} from "../actionCreators/notice";
 
 import {connect} from "react-redux";
+
 
 const mapStateToProps = state => {
   return {
@@ -39,6 +49,13 @@ const mapDispatchToProps = dispatch => {
 
 
 const redTheme = createMuiTheme(MyTheme.palette.stop);
+
+const useStyles = theme => ({
+  root: {
+    background: MyTheme.palette.primary.light,
+  },
+});
+
 
 class Task extends React.Component {
   constructor(props) {
@@ -102,15 +119,13 @@ class Task extends React.Component {
       );
     });
 
+    const {classes} = this.props;
+
 
     return (
-      <>
-        <Box
-          bgcolor="primary.light"
-          p={2}
-          color="primary.contrastText"
-          borderRadius="borderRadius"
-        >
+      <ExpansionPanel className={classes.root}>
+
+        <ExpansionPanelSummary expandIcon={<IconsLib.ExpandMore/>}>
           <Grid container>
             <Grid item xs={12} sm={9}>
               <Typography color="textSecondary" variant="caption">
@@ -142,17 +157,24 @@ class Task extends React.Component {
                   <>
                     <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
                       <Button
+                        className={'extends-panel__btn'}
                         theme={this.state.play ? redTheme : MyTheme}
                         variant={"outlined"}
                         size="small"
                         color={"secondary"}
-                        onClick={this.state.play ? () => {
-                          {
+                        onClick={this.state.play ?
+                          (e) => {
+                            e.stopPropagation();
                             stop();
                             this.stopTimer(getTime());
                             reset();
                           }
-                        } : start}
+                          :
+                          (e) => {
+                            e.stopPropagation();
+                            start();
+                          }
+                        }
                       >
                         {this.state.play ? (
                           <IconsLib.Stop color="secondary"/>
@@ -171,7 +193,9 @@ class Task extends React.Component {
 
             </Grid>
           </Grid>
+        </ExpansionPanelSummary>
 
+        <ExpansionPanelDetails>
           <Box m={1}>
             План:
             {this.props.estimated_hours ? this.props.estimated_hours : 0}
@@ -218,13 +242,12 @@ class Task extends React.Component {
               label={`c ${this.props.start_date} до ${this.props.due_date}`}
             />
           )}
-
-        </Box>
-      </>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Task);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(Task));
 
 

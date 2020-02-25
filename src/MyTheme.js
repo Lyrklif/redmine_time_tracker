@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import {createMuiTheme} from "@material-ui/core/styles";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import indigo from "@material-ui/core/colors/indigo";
 import teal from "@material-ui/core/colors/teal";
@@ -49,7 +49,6 @@ export default createMuiTheme({
           minWidth: "40px",
         }
       },
-      
     },
 
     stop: {
@@ -58,6 +57,6 @@ export default createMuiTheme({
         dark: "#C2110",
         contrastText: "#FFFFFF"
       }
-    }
+    },
   }
 });
