@@ -57,7 +57,6 @@ const useStyles = theme => ({
   activity: {
     width: '100%'
   },
-
 });
 
 
@@ -115,6 +114,10 @@ class Task extends React.Component {
     });
   };
 
+  componentWillUnmount() {
+    this.props.dispatchNotSavedData(false);
+  }
+
 
   render() {
     const {classes} = this.props;
@@ -166,6 +169,7 @@ class Task extends React.Component {
                   <>
                     <MuiThemeProvider theme={this.state.play ? redTheme : MyTheme}>
                       <Button
+                        disabled={(this.props.notSavedData && !this.state.play) ? true : null}
                         className={'extends-panel__btn'}
                         theme={this.state.play ? redTheme : MyTheme}
                         variant={"outlined"}
@@ -188,7 +192,7 @@ class Task extends React.Component {
                         {this.state.play ? (
                           <IconsLib.Stop color="secondary"/>
                         ) : (
-                          <IconsLib.PlayArrow color="secondary"/>
+                          <IconsLib.PlayArrow color={(this.props.notSavedData && !this.state.play) ? 'primary' : 'secondary'}/>
                         )}
                       </Button>
                       <Box m={1}/>
@@ -205,7 +209,7 @@ class Task extends React.Component {
         <ExpansionPanelDetails>
 
           <Grid container spacing={2}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} sm={6} md={8}>
               <TextField
                 variant="outlined"
                 multiline
@@ -217,7 +221,7 @@ class Task extends React.Component {
               />
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <Box mb={1}>
                 <FormControl className={classes.activity}>
                   <Select value={this.state.activity} onChange={this.changeActivity}>

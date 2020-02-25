@@ -11,7 +11,9 @@ import {
   UPD_LOGIN,
   UPD_ACTIVITIES,
   UPD_NOTICE,
+  UPD_MODAL,
   UPD_NOT_SAVED_DATA,
+  UPD_MOBILE_MENU,
 } from '../variables/actionTypes';
 
 export default (state, action) => {
@@ -46,13 +48,35 @@ export default (state, action) => {
           }
         }
       });
-      // изменить notSavedData
+    // изменить UPD_MODAL
+    case UPD_MODAL:
+      return Object.assign({}, state, {
+        ...state,
+        'application': {
+          ...state.application,
+          'modal': {
+            show: action.modal.show !== undefined ? action.modal.show : false,
+            title: action.modal.title !== undefined ? action.modal.title : state.application.modal.title,
+            text: action.modal.text !== undefined ? action.modal.text : state.application.modal.text
+          }
+        }
+      });
+    // изменить notSavedData
     case UPD_NOT_SAVED_DATA:
       return Object.assign({}, state, {
         ...state,
         'application': {
           ...state.application,
           'notSavedData': action.value !== undefined ? action.value : !state.application.value,
+        }
+      });
+    // изменить UPD_MOBILE_MENU
+    case UPD_MOBILE_MENU:
+      return Object.assign({}, state, {
+        ...state,
+        'application': {
+          ...state.application,
+          'showMobileMenu': action.value !== undefined ? action.value : !state.application.showMobileMenu,
         }
       });
     // изменить UPD_LOGIN

@@ -1,6 +1,4 @@
-// import {
-//   default_color,
-// } from './vars';
+
 
 // Начальные значения
 export const startingValue = {
@@ -28,6 +26,15 @@ export const startingValue = {
 
   application: {
     notSavedData: false,
+
+    showMobileMenu: false,
+    
+    modal: {
+      show: false,
+      title: '',
+      text: ''
+    },
+
     notice: {
       show: false,
       type: '',
