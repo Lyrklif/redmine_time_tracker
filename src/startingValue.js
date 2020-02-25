@@ -27,6 +27,7 @@ export const startingValue = {
   },
 
   application: {
+    notSavedData: false,
     notice: {
       show: false,
       type: '',

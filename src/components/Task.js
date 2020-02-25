@@ -26,6 +26,7 @@ import timeEntries from '../redmine/timeEntries';
 
 import Notice from '../components/Notice';
 import {notice} from "../actionCreators/notice";
+import {notSavedData} from "../actionCreators/notSavedData";
 
 import {connect} from "react-redux";
 
@@ -35,12 +36,14 @@ const mapStateToProps = state => {
     show: state.application.notice.show,
     type: state.application.notice.type,
     text: state.application.notice.text,
+    notSavedData: state.application.notSavedData
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     dispatchNotice: (show, type, text) => dispatch(notice(show, type, text)),
+    dispatchNotSavedData: value => dispatch(notSavedData(value)),
   };
 };
 
@@ -82,11 +85,12 @@ class Task extends React.Component {
   };
 
   switchPlay = (value) => {
-    this.setState({play: value ? value : !this.state.play})
+    this.setState({play: value ? value : !this.state.play});
   };
 
   startTimer = () => {
     this.switchPlay(true);
+    this.props.dispatchNotSavedData(true);
   };
 
   stopTimer = (milliseconds) => {
@@ -97,6 +101,8 @@ class Task extends React.Component {
     //TODO вкл/выкл отправку времени
     let entries = timeEntries(this.props.id, hours, this.state.activity, this.state.comment);
     this.feedback(entries);
+
+    this.props.dispatchNotSavedData(false);
   };
 
   feedback = (response) => {
