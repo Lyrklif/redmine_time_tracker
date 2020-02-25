@@ -75,7 +75,6 @@ class App extends React.Component {
     }
   };
 
-
   setAuthorization = (response) => {
     response.then(e => {
       if (e) {
