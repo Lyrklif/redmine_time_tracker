@@ -28,8 +28,6 @@ https://lyrklif.github.io/redmine_time_tracker/
  **axios** | для выполнения HTTP и HTTPS-запросов 
  **gh-pages** | для быстрой публикации файлов в ветке gh-pages 
 
- <br> 
- 
  #### Новые команды
    Название | Описание
   ------------ | -------------
