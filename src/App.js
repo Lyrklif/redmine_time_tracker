@@ -100,7 +100,9 @@ class App extends React.Component {
 
         this.setState({ isLoading: false });
       } else {
-        alert('Ошибка при авторизации');
+        if (localStorage.getItem('url')) localStorage.removeItem('url');
+        if (localStorage.getItem('api')) localStorage.removeItem('api');
+        alert('Ошибка при авторизации.  Попробуйте снова');
       }
     });
   };
@@ -127,27 +129,30 @@ class App extends React.Component {
           <Box component={'main'} className={'main-content'}>
 
             {/* TODO выбрать между этими блоками */}
-            {/* {authorized ?
+            {authorized ?
               <Switch>
                 <Route exact path='/' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
                 <Route exact path='/tasks' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
                 <Route exact path='/statistics' render={() => (authorized ? (<Statistics />) : (<Redirect to="/login" />))} />
                 <Route exact path='/login' render={() => (authorized ? (<Redirect to="/" />) : (<Login />))} />
-              </Switch>
-              :
-              <Login />
-            } */}
 
-            {authorized ?
-              <Switch>
-                <Route exact path="/"><Tasks /></Route>
-                <Route exact path="/tasks"><Tasks /></Route>
-                <Route exact path="/statistics"><Statistics /></Route>
-                <Route exact path="/login"><Login /></Route>
+                {/* Для GitHub Pages*/}
+                <Route exact path='/redmine_time_tracker/' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
               </Switch>
               :
               <Login />
             }
+
+            {/*{authorized ?*/}
+            {/*  <Switch>*/}
+            {/*    <Route exact path="/"><Tasks /></Route>*/}
+            {/*    <Route exact path="/tasks"><Tasks /></Route>*/}
+            {/*    <Route exact path="/statistics"><Statistics /></Route>*/}
+            {/*    <Route exact path="/login"><Login /></Route>*/}
+            {/*  </Switch>*/}
+            {/*  :*/}
+            {/*  <Login />*/}
+            {/*}*/}
 
           </Box>
         </Box>
