@@ -1,6 +1,42 @@
-## Redmine Time Tracker
+# Redmine Time Tracker
 
-https://lyrklif.github.io/redmine_time_tracker/    
+https://lyrklif.github.io/redmine_time_tracker/  
+
+Написан на React.js, PWA настроен  
+
+**Внимание!** Если ваш redmine url начинается с ***http://***, а не ***https://***, то для использования трекера на gh-pages нужно разрешить небезопасный контент в браузере. В противном случае запросы к http://... будут **блокироваться** *(gh-pages на https)*.   
+ *[на локальном с этим проблем нет, можно клонировать репозиторий и запускать]*  
+ 
+ Для запуска проекта:  
+ ```  
+ npm i  
+ npm start  
+```
+ <br>
+ Как разрешить небезопасный контент в браузере:  
+ 
+ Шаг 1  
+ ![Шаг 1](https://i.paste.pics/787f9cdf42e25d1d13939ff468c4a292.png)  
+ 
+ Шаг 2  
+ ![Шаг 1](https://i.paste.pics/aa76c27d2989729cad2872e752a00595.png)  
+ 
+ #### Использованные плагины, помимо стандартных в шаблоне Create React App  
+ Название | Описание
+ ------------ | -------------
+ **@material-ui** | готовые стилизованные компоненты 
+ **axios** | для выполнения HTTP и HTTPS-запросов 
+ **gh-pages** | для быстрой публикации файлов в ветке gh-pages 
+
+ <br> 
+ 
+ #### Новые команды
+   Название | Описание
+  ------------ | -------------
+  **predeploy** | подготовить файлы к публикации 
+  **deploy** | выложить файлы из папки build на gh-pages 
+ 
+ <br> 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
