@@ -16,7 +16,7 @@ https://lyrklif.github.io/redmine_time_tracker/
  Как разрешить небезопасный контент в браузере:  
  
  Шаг 1  
- ![Шаг 1](https://i.paste.pics/787f9cdf42e25d1d13939ff468c4a292.png)  
+ ![Шаг 1](https://i.paste.pics/b44dd02ae25ad2f7b890ca78eddf8680.png)  
  
  Шаг 2  
  ![Шаг 1](https://i.paste.pics/aa76c27d2989729cad2872e752a00595.png)  
