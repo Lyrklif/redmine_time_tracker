@@ -117,6 +117,7 @@ class App extends React.Component {
 
   render() {
     let authorized = this.props.authorized;
+    const gitHubPagesUrl = 'redmine_time_tracker';
 
     return (
       <MuiThemeProvider theme={MyTheme}>
@@ -137,7 +138,7 @@ class App extends React.Component {
                 <Route exact path='/login' render={() => (authorized ? (<Redirect to="/" />) : (<Login />))} />
 
                 {/* Для GitHub Pages*/}
-                <Route exact path='/redmine_time_tracker/' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
+                <Route exact path={`/${gitHubPagesUrl}/`} render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
               </Switch>
               :
               <Login />
