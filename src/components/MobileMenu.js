@@ -11,7 +11,7 @@ import { Redirect, Route, Switch, Prompt, Link } from 'react-router-dom';
 import * as IconsLib from "@material-ui/icons";
 import { Divider } from "@material-ui/core";
 
-
+import {gitHubPagesName} from '../variables/path';
 
 
 const mapStateToProps = (state) => {
@@ -46,7 +46,7 @@ class MobileMenu extends React.Component {
 
         <List>
           <ListItem  >
-            <Link to="/tasks" className={"clear-link-style fullwidth"} >
+            <Link to={`/${gitHubPagesName}/tasks`} className={"clear-link-style fullwidth"} >
               <Button color="inherit" fullWidth onClick={this.closeDrawer}>
                 Задачи
               </Button>
@@ -54,7 +54,7 @@ class MobileMenu extends React.Component {
           </ListItem>
 
           <ListItem  >
-            <Link to="/statistics" className={"clear-link-style fullwidth"}>
+            <Link to={`/${gitHubPagesName}/statistics`} className={"clear-link-style fullwidth"}>
               <Button color="inherit" fullWidth onClick={this.closeDrawer}>
                 Статистика
               </Button>
