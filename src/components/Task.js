@@ -66,10 +66,11 @@ class Task extends React.Component {
 
     this.state = {
       play: false,
-      seconds: 0,
-      minutes: 0,
+      // seconds: 0,
+      // minutes: 0,
       hours: 0,
       timer: 0,
+
       activity: Object.keys(this.props.activities)[0],
       comment: '',
     };
@@ -99,19 +100,33 @@ class Task extends React.Component {
 
     //TODO вкл/выкл отправку времени
     let entries = timeEntries(this.props.id, hours, this.state.activity, this.state.comment);
-    this.feedback(entries);
+    this.setState({
+        hours: hours,
+      },
+      () => {
+        this.feedback(entries);
+      }
+    );
 
     this.props.dispatchNotSavedData(false);
   };
 
   feedback = (response) => {
-    response.then(e => {
-      if (e) {
-        this.props.dispatchNotice(true, 'success', 'Время учтено');
-      } else {
-        this.props.dispatchNotice(true, 'error', 'Ошибка при отправке данных');
-      }
-    });
+    if (response === null) {
+      this.props.dispatchNotice(true, 'error',
+        'Ошибка! Данные НЕ отправлены! ' +
+        'Ваше неучтённое время: ' + this.state.hours + 'ч. ' +
+        'Похоже, данные сайта были очищены вместе с Redmine Api Key. ' +
+        'Перезагрузите страницу и заново авторизуйтесь');
+    } else {
+      response.then(e => {
+        if (e) {
+          this.props.dispatchNotice(true, 'success', 'Время учтено');
+        } else {
+          this.props.dispatchNotice(true, 'error', 'Ошибка при отправке данных');
+        }
+      });
+    }
   };
 
   componentWillUnmount() {
