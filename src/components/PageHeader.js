@@ -19,6 +19,8 @@ import Box from '@material-ui/core/Box';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { mobileMenu } from "../actionCreators/mobileMenu";
 
+import {gitHubPagesName} from '../variables/path';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -86,13 +88,13 @@ class PageHeader extends React.Component {
             </Hidden>
 
             <Hidden smDown>
-              <Link to="/tasks" className={"clear-link-style"}>
+              <Link to={`/${gitHubPagesName}/tasks`} className={"clear-link-style"}>
                 <Button color="inherit">
                   Задачи
               </Button>
               </Link>
 
-              <Link to="/statistics" className={"clear-link-style"}>
+              <Link to={`/${gitHubPagesName}/statistics`} className={"clear-link-style"}>
                 <Button color="inherit">
                   Статистика
               </Button>

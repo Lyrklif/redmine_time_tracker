@@ -26,7 +26,7 @@ import Notice from './components/Notice';
 import Modal from './components/Modal';
 import MobileMenu from './components/MobileMenu';
 
-
+import {gitHubPagesName} from './variables/path';
 
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -131,28 +131,25 @@ class App extends React.Component {
             {/* TODO выбрать между этими блоками */}
             {authorized ?
               <Switch>
-                <Route exact path='/' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
-                <Route exact path='/tasks' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
-                <Route exact path='/statistics' render={() => (authorized ? (<Statistics />) : (<Redirect to="/login" />))} />
-                <Route exact path='/login' render={() => (authorized ? (<Redirect to="/" />) : (<Login />))} />
+                {/*<Route exact path='/' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />*/}
+                {/*<Route exact path='/tasks' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />*/}
+                {/*<Route exact path='/statistics' render={() => (authorized ? (<Statistics />) : (<Redirect to="/login" />))} />*/}
+                {/*<Route exact path='/login' render={() => (authorized ? (<Redirect to="/" />) : (<Login />))} />*/}
 
-                {/* Для GitHub Pages*/}
-                <Route exact path='/redmine_time_tracker/' render={() => (authorized ? (<Tasks />) : (<Redirect to="/login" />))} />
+                <Route exact path='/' render={() => (authorized ? (<Tasks />) : (<Redirect to={`/${gitHubPagesName}/login`} />))} />
+                <Route exact path='/tasks' render={() => (authorized ? (<Tasks />) : (<Redirect to={`/${gitHubPagesName}/login`} />))} />
+                <Route exact path='/statistics' render={() => (authorized ? (<Statistics />) : (<Redirect to={`/${gitHubPagesName}/login`} />))} />
+                <Route exact path='/login' render={() => (authorized ? (<Redirect to={`/${gitHubPagesName}/`} />) : (<Login />))} />
+
+                <Route exact path={`/${gitHubPagesName}/`} render={() => (authorized ? (<Tasks />) : (<Redirect to={`/${gitHubPagesName}/login`} />))} />
+                <Route exact path={`/${gitHubPagesName}/tasks`} render={() => (authorized ? (<Tasks />) : (<Redirect to={`/${gitHubPagesName}/login`} />))} />
+                <Route exact path={`/${gitHubPagesName}/statistics`} render={() => (authorized ? (<Statistics />) : (<Redirect to={`/${gitHubPagesName}/login`} />))} />
+                <Route exact path={`/${gitHubPagesName}/login`} render={() => (authorized ? (<Redirect to={`/${gitHubPagesName}/`} />) : (<Login />))} />
+
               </Switch>
               :
               <Login />
             }
-
-            {/*{authorized ?*/}
-            {/*  <Switch>*/}
-            {/*    <Route exact path="/"><Tasks /></Route>*/}
-            {/*    <Route exact path="/tasks"><Tasks /></Route>*/}
-            {/*    <Route exact path="/statistics"><Statistics /></Route>*/}
-            {/*    <Route exact path="/login"><Login /></Route>*/}
-            {/*  </Switch>*/}
-            {/*  :*/}
-            {/*  <Login />*/}
-            {/*}*/}
 
           </Box>
         </Box>
