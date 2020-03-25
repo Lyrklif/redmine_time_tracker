@@ -26,8 +26,8 @@ https://lyrklif.github.io/redmine_time_tracker/
  #### Скриншоты экранов: 
 ![Войти по логину/паролю](https://i.paste.pics/25ec549297e4f3e942c2fee144f57fdf.png)  
 ![Войти по api](https://i.paste.pics/2db7f6d149aceb956cfc1aa3101f2cc0.png)  
-![Задачи](https://i.paste.pics/cfbbf86fd82353f96a07ee878d958b57.png)  
-![Статистика](https://i.paste.pics/f96406ca05a902978de1b37cc80a17c6.png)  
+![Задачи](https://i.paste.pics/8ffe838d2e9395443b5b49025b3be8ee.png)  
+![Статистика](https://i.paste.pics/f1a53c3ddea8142fc85cab9fe05cb687.png)  
 
 **Внимание!** Если ваш redmine url начинается с ***http://***, а не ***https://***, то для использования трекера на gh-pages нужно разрешить небезопасный контент в браузере. В противном случае запросы к http://... будут **блокироваться** (gh-pages на https).   
  *[на локальном с этим проблем нет, можно клонировать репозиторий и запускать]*  
