@@ -24,21 +24,24 @@ https://lyrklif.github.io/redmine_time_tracker/
   **deploy** | выложить файлы из папки build на gh-pages 
 
  #### Скриншоты экранов: 
-![Войти по логину/паролю](https://i.paste.pics/25ec549297e4f3e942c2fee144f57fdf.png)  
-![Войти по api](https://i.paste.pics/2db7f6d149aceb956cfc1aa3101f2cc0.png)  
-![Задачи](https://i.paste.pics/8ffe838d2e9395443b5b49025b3be8ee.png)  
-![Статистика](https://i.paste.pics/f1a53c3ddea8142fc85cab9fe05cb687.png)  
+
 
 **Внимание!** Если ваш redmine url начинается с ***http://***, а не ***https://***, то для использования трекера на gh-pages нужно разрешить небезопасный контент в браузере. В противном случае запросы к http://... будут **блокироваться** (gh-pages на https).   
  *[на локальном с этим проблем нет, можно клонировать репозиторий и запускать]*  
  
+![1](https://user-images.githubusercontent.com/41914434/209459380-ae727f73-42e3-4801-ab60-ff2704cadae4.png)
+![2](https://user-images.githubusercontent.com/41914434/209459379-771c29a9-7ba5-49e4-83ef-58e7b89bd379.png)
+![3](https://user-images.githubusercontent.com/41914434/209459377-fcf50ceb-334d-498b-8303-25a30e66f302.png)
+![4](https://user-images.githubusercontent.com/41914434/209459381-a688af62-2ea3-4321-8d70-892218435d96.png)
+
 
  <br>
  Как разрешить небезопасный контент в браузере:  
  
+![5](https://user-images.githubusercontent.com/41914434/209459409-decfdb4e-996d-4b22-8d38-06b799432093.png) 
+![6](https://user-images.githubusercontent.com/41914434/209459406-a7f4fcfb-c48a-4d98-9211-814ed10a357b.png)
 
- ![Шаг 1](https://i.paste.pics/b44dd02ae25ad2f7b890ca78eddf8680.png)  
- ![Шаг 2](https://i.paste.pics/a502c186f2f0e44c9dac38caef896bff.png)  
+ 
  
  
  <br> 
